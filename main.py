@@ -1128,30 +1128,4 @@ errorVS[1] = errorVS[1]
 print "[Fig.V/S] K = %.3f" %(poptVS[0]), "+/- %.3f" %(errorVS[0] )
 print "[Fig.V/S] v = %.3f" %(poptVS[1]), "+/- %.3f" %(errorVS[1])
 
-#np.savetxt("gradients_40.txt", np.c_[popt1[1],popt2[1],popt3[1],popt4[1],poptVS[1]], fmt ='%0.6f')
-Size_15 = np.loadtxt("gradients_15.txt")
-Size_20 = np.loadtxt("gradients_20.txt")
-Size_25 = np.loadtxt("gradients_25.txt")
-Size_30 = np.loadtxt("gradients_30.txt")
-Size_35 = np.loadtxt("gradients_35.txt")
-Size_40 = np.loadtxt("gradients_40.txt")
-Size_45 = np.loadtxt("gradients_45.txt")
-Size_50 = np.loadtxt("gradients_50.txt")
-Size_55 = np.loadtxt("gradients_55.txt")
-Size_60 = np.loadtxt("gradients_60.txt")
-Size_65 = np.loadtxt("gradients_65.txt")
-Size_70 = np.loadtxt("gradients_70.txt")
-Size_80 = np.loadtxt("gradients_80.txt")
-Size_100 = np.loadtxt("gradients_100.txt")
-
-grad_d1 = [Size_15[0],Size_20[0], Size_25[0], Size_30[0], Size_35[0], Size_40[0], Size_45[0], Size_50[0], Size_55[0], Size_60[0], Size_65[0], Size_70[0], Size_80[0], Size_100[0]]
-grad_d2 = [Size_15[1],Size_20[1], Size_25[1], Size_30[1], Size_35[1], Size_40[1], Size_45[1], Size_50[1], Size_55[1], Size_60[1], Size_65[1], Size_70[1], Size_80[1], Size_100[1]]
-grad_b = [Size_15[2],Size_20[2], Size_25[2], Size_30[2], Size_35[2], Size_40[2], Size_45[2], Size_50[2], Size_55[2], Size_60[2], Size_65[2], Size_70[2], Size_80[2], Size_100[2]]
-grad_g = [Size_15[3],Size_20[3], Size_25[3], Size_30[3], Size_35[3], Size_40[3], Size_45[3], Size_50[3], Size_55[3], Size_60[3], Size_65[3], Size_70[3], Size_80[3], Size_100[3]]
-grad_vs = [Size_15[4],Size_20[4], Size_25[4], Size_30[4], Size_35[4], Size_40[4], Size_45[4], Size_50[4], Size_55[4], Size_60[4], Size_65[4], Size_70[4], Size_80[4], Size_100[4]]
-x = [15,20,25,30,35,40,45,50,55,60,65,70,80,100]
-plt.figure("Fig.Param")
-plt.scatter(x, grad_g)
-plt.show("Fig.Param")
-
 print "Fraction of the lenght of open strings", 1.0*(np.sum(lattice.length_inf))/(np.sum(lattice.length_inf)+np.sum(lattice.length_loop))  
