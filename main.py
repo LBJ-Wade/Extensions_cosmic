@@ -69,13 +69,13 @@ class SpaceCube:
         for i in range(len(box[:,0,0])):
             for j in range(len(box[0,:,0])):
                 for k in range(len(box[0,0,:])):
-                     box[i,j,k] = randint(0, 2) 
-                     if (i ==N-1):
-                         box[i,j,k] = box[0,j,k]
-                     if(j == N-1):
-                         box[i,j,k] = box[i,0,k]
-                     if (k ==N-1):
-                         box[i,j,k] = box[i,j,0]
+                     box[i,j,k] = randint(0, 2)
+                     if (i==N-1):
+                         box[N-1,j,k]=box[0,j,k]
+                     if (j==N-1):
+                         box[N-1,j,k]=box[i,0,k]
+                     if (k==N-1):
+                         box[N-1,j,k]=box[i,j,0]
         total =0 
         faceNum=0
         edge = False
@@ -771,14 +771,14 @@ print "Number of closed loops", len(lattice.length_loop)
 print "Number of infinite strings", len(lattice.length_inf)
 print "Percentage of closed loops", 1.0*sum(lattice.length_loop)/sum((lattice.length_inf+lattice.length_loop))
 print "Fraction of the lenght of open strings", 1.0*(np.sum(lattice.length_inf))/(np.sum(lattice.length_inf)+np.sum(lattice.length_loop))
-L_Frac = 1.0*(np.sum(lattice.length_inf))/(np.sum(lattice.length_inf)+np.sum(lattice.length_loop)) 
-BC_fopen=np.loadtxt("BC_fopen.txt")  #box size: 14, 15, 18, 19, 20, 22, 24, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 80, 90, 100, 125
-x = [14,15,18,19,20,22,24,25,30,35,40,45,50,55,60,65,70,80,90,100, 125]
+
+BC_fopen=np.loadtxt("BC_fopen.txt")  
 plt.figure("BC_fopen")
-plt.scatter(x, BC_fopen, label = 'Periodic Lattice' ) 
+plt.scatter(BC_fopen[:,0],BC_fopen[:,1], label = 'Periodic Lattice' ) 
 plt.ylabel("Fraction $\it{f}_{open}$") 
 plt.xlabel("Box Size $N$")
 plt.legend(loc = 1,prop={'size': 16})
 ax = plt.axes()
-ax.set_xticks([15,20,25,30,35,40,45,50,55,60,65,70,80,90,100, 125])
+ticklist = BC_fopen[:,0]
+#ax.set_xticks([15,20,25,30,35,40,45,50,55,60,65,70,80,90,100,110,120,130,140,150,160,170,180,190,200])
 plt.show("BC_fopen")
