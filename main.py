@@ -53,45 +53,7 @@ def PlotLengthHist():
     bbox=dict(facecolor='none', edgecolor='black', boxstyle='round,pad=0.25'))
     plt.show("Histogram")
 
-def Plot3DStrings():
-    fig=plt.figure("3DFig", figsize=(8.0*1.2,6.0*1.2))
-    ax = Axes3D(fig)  
-    for n in xrange(0,len(lattice.tot_loop_coord_i)-1):
-        ax.plot3D(lattice.tot_loop_coord_i[n],lattice.tot_loop_coord_j[n],lattice.tot_loop_coord_k[n], color='blue', label=r'$Closed \ Strings$'  if n == 0 else "", linewidth = 3)
-    for n in xrange(0,len(lattice.tot_inf_coord_i)-1):
-        ax.plot3D(lattice.tot_inf_coord_i[n],lattice.tot_inf_coord_j[n],lattice.tot_inf_coord_k[n], color='r', label=r'$Infinite \ Strings$'  if n == 0 else "", linewidth = 3)        
-    ax.set_title(r"$3D \ Plot \ of \ Cosmic \ Strings $", fontsize=25, y=1.025, x=0.32)
-    ax.set_xlabel(r"$X/ \xi$", fontsize=18, labelpad=10)
-    ax.set_ylabel(r"$Y/ \xi$", fontsize=18, labelpad=10)
-    ax.set_zlabel(r"$Z/ \xi$", fontsize=18, labelpad=10)
-    ax.legend(loc = 'upper right', fontsize=22)
-    ax.annotate(r'$Size: \ N\xi \ = \ {0}$'.format(N), xy=(525, 20), xycoords='figure points', fontsize=22,
-    bbox=dict(facecolor='none', edgecolor='black', boxstyle='round,pad=0.25'))
-    plt.show("3DFig")  
-    fig1=plt.figure("3DFigInf", figsize=(8.0*1.2,6.0*1.2))
-    ax1=Axes3D(fig1) 
-    for n in xrange(0,len(lattice.tot_inf_coord_i)-1):
-        ax1.plot3D(lattice.tot_inf_coord_i[n],lattice.tot_inf_coord_j[n],lattice.tot_inf_coord_k[n], color='r', label=r'$Infinite \ Strings$' if n == 0 else "", linewidth = 1.5)      
-    ax1.set_title(r"$3D \ Plot \ of \ Infinite \ Strings $", fontsize=25, y=1.025, x=0.32)
-    ax1.set_xlabel(r"$X/ \xi$", fontsize=18, labelpad=10)
-    ax1.set_ylabel(r"$Y/ \xi$", fontsize=18, labelpad=10)
-    ax1.set_zlabel(r"$Z/ \xi$", fontsize=18, labelpad=10)
-    ax1.legend(loc = 'upper right', fontsize=22)
-    ax1.annotate(r'$Size: \ N\xi \ = \ {0}$'.format(N), xy=(525, 20), xycoords='figure points', fontsize=22,
-    bbox=dict(facecolor='none', edgecolor='black', boxstyle='round,pad=0.25'))
-    plt.show("3DFig1")   
-    fig2=plt.figure("3DFigLoop", figsize=(8.0*1.2,6.0*1.2))
-    ax2=Axes3D(fig2)    
-    for n in xrange(0,len(lattice.tot_loop_coord_i)-1):
-        ax2.plot3D(lattice.tot_loop_coord_i[n],lattice.tot_loop_coord_j[n],lattice.tot_loop_coord_k[n], color='b', label=r'$Closed \ Strings$' if n == 0 else "", linewidth = 1.5)       
-    ax2.set_title(r"$3D \ Plot \ of \ Closed \ Strings $", fontsize=25, y=1.025, x=0.32)
-    ax2.set_xlabel(r"$X/ \xi$", fontsize=18, labelpad=10)
-    ax2.set_ylabel(r"$Y/ \xi$", fontsize=18, labelpad=10)
-    ax2.set_zlabel(r"$Z/ \xi$", fontsize=18, labelpad=10)
-    ax2.legend(loc = 'upper right', fontsize=22)
-    ax2.annotate(r'$Size: \ N\xi \ = \ {0}$'.format(N), xy=(525, 20), xycoords='figure points', fontsize=22,
-    bbox=dict(facecolor='none', edgecolor='black', boxstyle='round,pad=0.25'))
-    plt.show("3DFig1")
+
 
 class SpaceCube:
     
@@ -107,7 +69,13 @@ class SpaceCube:
         for i in range(len(box[:,0,0])):
             for j in range(len(box[0,:,0])):
                 for k in range(len(box[0,0,:])):
-                     box[i,j,k] = randint(0, 3) ###Change
+                     box[i,j,k] = randint(0, 2) 
+                     if (i ==N):
+                         box[i,j,k] = box[0,j,k]
+                     if(j == N):
+                         box[i,j,k] = box[i,0,k]
+                     if (k ==N):
+                         box[i,j,k] = box[i,j,0]
         total =0 
         faceNum=0
         edge = False
@@ -119,24 +87,16 @@ class SpaceCube:
         length_inf=[]
         length_loop=[]
         size_loop=[]
-        loop_coord_i=[]
-        loop_coord_j=[]
-        loop_coord_k=[]
-        tot_loop_coord_i=[]
-        tot_loop_coord_j=[]
-        tot_loop_coord_k=[]
-        inf_coord_i=[]
-        inf_coord_j=[]
-        inf_coord_k=[]
-        tot_inf_coord_i=[]
-        tot_inf_coord_j=[]
-        tot_inf_coord_k=[]
         x_min = 0
         x_max = 0
         y_min = 0
         y_max = 0
         z_min = 0
         z_max = 0
+        wind_x = 0
+        wind_y = 0
+        wind_z = 0
+        windnumber = 0
         P=0 # Perimeter - called R in VV paper
         VS_ratio = []
         self.x_min = x_min
@@ -146,6 +106,10 @@ class SpaceCube:
         self.z_min = z_min
         self.z_max = z_max
         self.P=P
+        self.wind_x = wind_x
+        self.wind_y = wind_y
+        self.wind_z = wind_z
+        self.windnumber = windnumber
         self.VS_ratio = VS_ratio 
         self.string_coords=string_coords
         self.sum_e2e=sum_e2e
@@ -155,18 +119,6 @@ class SpaceCube:
         self.length_inf=length_inf 
         self.length_loop=length_loop
         self.size_loop=size_loop
-        self.loop_coord_i=loop_coord_i
-        self.loop_coord_j=loop_coord_j
-        self.loop_coord_k=loop_coord_k
-        self.tot_loop_coord_i=tot_loop_coord_i
-        self.tot_loop_coord_j=tot_loop_coord_j
-        self.tot_loop_coord_k=tot_loop_coord_k
-        self.inf_coord_i=inf_coord_i
-        self.inf_coord_j=inf_coord_j
-        self.inf_coord_k=inf_coord_k
-        self.tot_inf_coord_i=tot_inf_coord_i
-        self.tot_inf_coord_j=tot_inf_coord_j
-        self.tot_inf_coord_k=tot_inf_coord_k
         self.box=box
         self.edge=edge  
         self.yString=yString
@@ -234,7 +186,7 @@ class SpaceCube:
     def isString(self,face):   
         phase = 0   
         self.faceNum+=1
-        if (np.mod(face[3] - face[0],3) == 1): #test right-most and left-most values      ###Change                      
+        if (np.mod(face[3] - face[0],3) == 1): #test right-most and left-most values      #                      
             phase += 3
         elif (np.mod(face[3] - face[0],3) == 2): #test right-most and left-most values
             phase -= 3                       
@@ -532,26 +484,22 @@ class SpaceCube:
                 if ( self.zString[i,j,k] == 1 ):
                     """Follow"""
                     self.L=1
-                    self.inf_coord_i=[]
-                    self.inf_coord_j=[]
-                    self.inf_coord_k=[]
                     self.follow(self.zString,i,j,k,'Z')  
-                    self.tot_inf_coord_i.append(self.inf_coord_i)
-                    self.tot_inf_coord_j.append(self.inf_coord_j)
-                    self.tot_inf_coord_k.append(self.inf_coord_k)  
-                    self.length_inf.append(self.L)                                  
+                    self.windnumber = self.wind_x + self.wind_y + self.wind_z
+                    if (self.windnumber ==0):
+                        self.length_loop.append(self.L)  
+                    if (self.windnumber !=0): 
+                        self.length_inf.append(self.L)                              
                 k = N-1
                 if ( self.zString[i,j,k] == -1 ):
                     """Follow"""
                     self.L=1
-                    self.inf_coord_i=[]
-                    self.inf_coord_j=[]
-                    self.inf_coord_k=[]
                     self.follow(self.zString,i,j,k,'Z')
-                    self.tot_inf_coord_i.append(self.inf_coord_i)
-                    self.tot_inf_coord_j.append(self.inf_coord_j)
-                    self.tot_inf_coord_k.append(self.inf_coord_k) 
-                    self.length_inf.append(self.L) 
+                    self.windnumber = self.wind_x + self.wind_y + self.wind_z
+                    if (self.windnumber ==0):
+                        self.length_loop.append(self.L)  
+                    if (self.windnumber !=0): 
+                        self.length_inf.append(self.L)  
         """Y-Edges"""    
         for k in xrange(len(self.box[0,0,:])-1):
             for i in xrange(len(self.box[:,0,0])-1):   
@@ -559,26 +507,22 @@ class SpaceCube:
                 if ( self.yString[i,j,k] == 1 ):
                     """Follow"""
                     self.L=1
-                    self.inf_coord_i=[]
-                    self.inf_coord_j=[]
-                    self.inf_coord_k=[]
                     self.follow(self.yString,i,j,k,'Y')
-                    self.tot_inf_coord_i.append(self.inf_coord_i)
-                    self.tot_inf_coord_j.append(self.inf_coord_j)
-                    self.tot_inf_coord_k.append(self.inf_coord_k)  
-                    self.length_inf.append(self.L)                                   
+                    self.windnumber = self.wind_x + self.wind_y + self.wind_z  
+                    if (self.windnumber ==0):
+                        self.length_loop.append(self.L)  
+                    if (self.windnumber !=0): 
+                        self.length_inf.append(self.L)                                     
                 j = N-1
                 if ( self.yString[i,j,k] == -1 ):
                     """Follow"""
                     self.L=1
-                    self.inf_coord_i=[]
-                    self.inf_coord_j=[]
-                    self.inf_coord_k=[]
-                    self.follow(self.yString,i,j,k,'Y')
-                    self.tot_inf_coord_i.append(self.inf_coord_i)
-                    self.tot_inf_coord_j.append(self.inf_coord_j)
-                    self.tot_inf_coord_k.append(self.inf_coord_k) 
-                    self.length_inf.append(self.L)  
+                    self.follow(self.yString,i,j,k,'Y') 
+                    self.windnumber = self.wind_x + self.wind_y + self.wind_z
+                    if (self.windnumber ==0):
+                        self.length_loop.append(self.L)  
+                    if (self.windnumber !=0): 
+                        self.length_inf.append(self.L)    
         """X-Edges"""    
         for j in xrange(len(self.box[0,:,0])-1):
             for k in xrange(len(self.box[0,0,:])-1):    
@@ -586,26 +530,22 @@ class SpaceCube:
                 if ( self.xString[i,j,k] == 1 ):
                     """Follow"""
                     self.L=1
-                    self.inf_coord_i=[]
-                    self.inf_coord_j=[]
-                    self.inf_coord_k=[]
-                    self.follow(self.xString,i,j,k,'X')
-                    self.tot_inf_coord_i.append(self.inf_coord_i)
-                    self.tot_inf_coord_j.append(self.inf_coord_j)
-                    self.tot_inf_coord_k.append(self.inf_coord_k)   
-                    self.length_inf.append(self.L)                                   
+                    self.follow(self.xString,i,j,k,'X')  
+                    self.windnumber = self.wind_x + self.wind_y + self.wind_z 
+                    if (self.windnumber ==0):
+                        self.length_loop.append(self.L)  
+                    if (self.windnumber !=0): 
+                        self.length_inf.append(self.L)                                    
                 i = N-1
                 if ( self.xString[i,j,k] == -1 ):
                     """Follow"""
                     self.L=1
-                    self.inf_coord_i=[]
-                    self.inf_coord_j=[]
-                    self.inf_coord_k=[]
                     self.follow(self.xString,i,j,k,'X')
-                    self.tot_inf_coord_i.append(self.inf_coord_i)
-                    self.tot_inf_coord_j.append(self.inf_coord_j)
-                    self.tot_inf_coord_k.append(self.inf_coord_k) 
-                    self.length_inf.append(self.L)  
+                    self.windnumber = self.wind_x + self.wind_y + self.wind_z
+                    if (self.windnumber ==0):
+                        self.length_loop.append(self.L)  
+                    if (self.windnumber !=0): 
+                        self.length_inf.append(self.L) 
                                                                                                               
     def trackCentre(self):
         for i in xrange(0,len(self.box[:,0,0])-1):
@@ -620,13 +560,7 @@ class SpaceCube:
                         self.y_max = j
                         self.z_min = k
                         self.z_max = k
-                        self.loop_coord_i=[]
-                        self.loop_coord_j=[]
-                        self.loop_coord_k=[]
                         self.follow(self.zString,i,j,k,'Z')
-                        self.tot_loop_coord_i.append(self.loop_coord_i)
-                        self.tot_loop_coord_j.append(self.loop_coord_j)
-                        self.tot_loop_coord_k.append(self.loop_coord_k)
                         self.P = 3 + (self.x_max - self.x_min) + (self.y_max - self.y_min) + (self.z_max - self.z_min)  # 3 added to match spatial dimensions
                         V = (self.x_max - self.x_min)*(self.y_max - self.y_min)*(self.z_max - self.z_min)
                         S =2.0 * ((self.x_max - self.x_min)*(self.y_max - self.y_min) + (self.y_max - self.y_min)*(self.z_max - self.z_min) + (self.z_max - self.z_min)*(self.x_max - self.x_min))
@@ -645,13 +579,7 @@ class SpaceCube:
                         self.y_max = j
                         self.z_min = k
                         self.z_max = k
-                        self.loop_coord_i=[]
-                        self.loop_coord_j=[]
-                        self.loop_coord_k=[]
                         self.follow(self.yString,i,j,k,'Y')
-                        self.tot_loop_coord_i.append(self.loop_coord_i)
-                        self.tot_loop_coord_j.append(self.loop_coord_j)
-                        self.tot_loop_coord_k.append(self.loop_coord_k)
                         self.P = 3 + (self.x_max - self.x_min) + (self.y_max - self.y_min) + (self.z_max - self.z_min)
                         V = (self.x_max - self.x_min)*(self.y_max - self.y_min)*(self.z_max - self.z_min)
                         S =2.0 * ((self.x_max - self.x_min)*(self.y_max - self.y_min) + (self.y_max - self.y_min)*(self.z_max - self.z_min) + (self.z_max - self.z_min)*(self.x_max - self.x_min))
@@ -670,13 +598,7 @@ class SpaceCube:
                         self.y_max = j
                         self.z_min = k
                         self.z_max = k
-                        self.loop_coord_i=[]
-                        self.loop_coord_j=[]
-                        self.loop_coord_k=[]
                         self.follow(self.xString,i,j,k,'X')
-                        self.tot_loop_coord_i.append(self.loop_coord_i)
-                        self.tot_loop_coord_j.append(self.loop_coord_j)
-                        self.tot_loop_coord_k.append(self.loop_coord_k)
                         self.P= 3 + (self.x_max - self.x_min) + (self.y_max - self.y_min) + (self.z_max - self.z_min)
                         V = (self.x_max - self.x_min)*(self.y_max - self.y_min)*(self.z_max - self.z_min)
                         S =2.0 * ((self.x_max - self.x_min)*(self.y_max - self.y_min) + (self.y_max - self.y_min)*(self.z_max - self.z_min) + (self.z_max - self.z_min)*(self.x_max - self.x_min))
@@ -706,18 +628,7 @@ class SpaceCube:
 
         self.string_coords.append([n_i,n_j,n_k]) 
         self.L += 1
-        self.loop_coord_i.append(i)
-        self.loop_coord_j.append(j)
-        self.loop_coord_k.append(k)
-        self.inf_coord_i.append(i)
-        self.inf_coord_j.append(j)
-        self.inf_coord_k.append(k)
-        self.loop_coord_i.append(n_i)
-        self.loop_coord_j.append(n_j)
-        self.loop_coord_k.append(n_k)
-        self.inf_coord_i.append(n_i)
-        self.inf_coord_j.append(n_j)
-        self.inf_coord_k.append(n_k)
+
         if (self.edge == False):
             while (True):
                 if (XYZ == n_XYZ and n_i==i and n_j==j and n_k==k):
@@ -745,10 +656,6 @@ class SpaceCube:
                 
                 self.L += 1
                 self.string_coords.append([m_i,m_j,m_k])
-                               
-                self.loop_coord_i.append(m_i)
-                self.loop_coord_j.append(m_j)
-                self.loop_coord_k.append(m_k)
                 if (n_XYZ =='X'):
                     self.xString[n_i,n_j,n_k]=0 
                 if (n_XYZ =='Y'):
@@ -757,43 +664,41 @@ class SpaceCube:
                     self.zString[n_i,n_j,n_k]=0
                 n_i , n_j, n_k, n_XYZ = m_i, m_j, m_k, m_XYZ
                 
-        if (self.edge == True):
+        if (self.edge == True): 
             if (XYZ =='X'):
-                self.xString[i,j,k]=0
+                self.wind_x += self.xString[i,j,k]
+                self.xString[i,j,k]=0  
             if (XYZ =='Y'):
-                self.yString[i,j,k]=0
+                self.wind_y += self.yString[i,j,k]
+                self.yString[i,j,k]=0  
             if (XYZ=='Z'):
+                self.wind_z += self.zString[i,j,k]
                 self.zString[i,j,k]=0
-            while (True):               
+            while (True):
                 if (n_XYZ == 'X'):
                     if (n_i==N-1 or n_i==0):
-                     self.xString[n_i,n_j,n_k]=0
-                     #print "Break X" 
-                     break
+                        self.wind_x += self.xString[n_i,n_j,n_k]
+                        self.xString[n_i,n_j,n_k]=0
+                        break
                 if (n_XYZ == 'Y'):
                     if (n_j==N-1 or n_j==0):
-                     self.yString[n_i,n_j,n_k]=0
-                     #print "Break Y"
-                     break
+                        self.wind_y += self.yString[n_i, n_j, n_k]
+                        self.yString[n_i,n_j,n_k]=0
+                        break
                 if (n_XYZ == 'Z'):
                     if (n_k==N-1 or n_k==0):
-                     self.zString[n_i,n_j,n_k]=0
-                     #print "Break Z"
-                     break
+                        self.wind_z += self.zString[n_i,n_j,n_k]
+                        self.zString[n_i,n_j,n_k]=0
+                        break
                 self.L += 1 
                 m_XYZ,m_i,m_j,m_k = self.followFunc(n_XYZ,n_i,n_j,n_k)
-                self.string_coords.append([m_i,m_j,m_k])                   
-                self.inf_coord_i.append(m_i)
-                self.inf_coord_j.append(m_j)
-                self.inf_coord_k.append(m_k)
                 if (n_XYZ =='X'):
                     self.xString[n_i,n_j,n_k]=0
                 if (n_XYZ =='Y'):
                     self.yString[n_i,n_j,n_k]=0
                 if (n_XYZ=='Z'):
                     self.zString[n_i,n_j,n_k]=0 
-                n_i , n_j, n_k, n_XYZ = m_i, m_j, m_k, m_XYZ
-                
+                n_i , n_j, n_k, n_XYZ = m_i, m_j, m_k, m_XYZ  
        
         len_coord=len(self.string_coords)
         if (len_coord>5):
@@ -865,6 +770,7 @@ print "Leftover strings:", np.abs(lattice.xString).sum()+np.abs(lattice.yString)
 print "Number of closed loops", len(lattice.length_loop)
 print "Number of infinite strings", len(lattice.length_inf)
 print "Percentage of closed loops", 1.0*sum(lattice.length_loop)/sum((lattice.length_inf+lattice.length_loop))
-#Plot3DStrings()
-#PlotLengthHist()
+print "Fraction of the lenght of open strings", 1.0*(np.sum(lattice.length_inf))/(np.sum(lattice.length_inf)+np.sum(lattice.length_loop))
+L_Frac = 1.0*(np.sum(lattice.length_inf))/(np.sum(lattice.length_inf)+np.sum(lattice.length_loop)) 
+PlotLengthHist()
 
