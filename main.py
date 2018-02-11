@@ -70,11 +70,11 @@ class SpaceCube:
             for j in range(len(box[0,:,0])):
                 for k in range(len(box[0,0,:])):
                      box[i,j,k] = randint(0, 2) 
-                     if (i ==N):
+                     if (i ==N-1):
                          box[i,j,k] = box[0,j,k]
-                     if(j == N):
+                     if(j == N-1):
                          box[i,j,k] = box[i,0,k]
-                     if (k ==N):
+                     if (k ==N-1):
                          box[i,j,k] = box[i,j,0]
         total =0 
         faceNum=0
@@ -751,7 +751,7 @@ class SpaceCube:
                                         self.sum_e2e[e]+=R
         self.string_coords=[]    
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
-N = 40
+N = 15
 lattice = SpaceCube(N)
 lattice.xPlane()
 lattice.yPlane()
