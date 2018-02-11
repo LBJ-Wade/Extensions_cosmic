@@ -772,5 +772,13 @@ print "Number of infinite strings", len(lattice.length_inf)
 print "Percentage of closed loops", 1.0*sum(lattice.length_loop)/sum((lattice.length_inf+lattice.length_loop))
 print "Fraction of the lenght of open strings", 1.0*(np.sum(lattice.length_inf))/(np.sum(lattice.length_inf)+np.sum(lattice.length_loop))
 L_Frac = 1.0*(np.sum(lattice.length_inf))/(np.sum(lattice.length_inf)+np.sum(lattice.length_loop)) 
-PlotLengthHist()
-
+BC_fopen=np.loadtxt("BC_fopen.txt")  #box size: 14, 15, 18, 19, 20, 22, 24, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 80, 90, 100, 125
+x = [14,15,18,19,20,22,24,25,30,35,40,45,50,55,60,65,70,80,90,100, 125]
+plt.figure("BC_fopen")
+plt.scatter(x, BC_fopen, label = 'Periodic Lattice' ) 
+plt.ylabel("Fraction $\it{f}_{open}$") 
+plt.xlabel("Box Size $N$")
+plt.legend(loc = 1,prop={'size': 16})
+ax = plt.axes()
+ax.set_xticks([15,20,25,30,35,40,45,50,55,60,65,70,80,90,100, 125])
+plt.show("BC_fopen")
