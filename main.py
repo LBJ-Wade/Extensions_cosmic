@@ -751,7 +751,7 @@ class SpaceCube:
                                         self.sum_e2e[e]+=R
         self.string_coords=[]    
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
-N = 15
+N = 40
 lattice = SpaceCube(N)
 lattice.xPlane()
 lattice.yPlane()
