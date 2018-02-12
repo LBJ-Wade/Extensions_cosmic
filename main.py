@@ -751,7 +751,7 @@ class SpaceCube:
                                         self.sum_e2e[e]+=R
         self.string_coords=[]    
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
-N = 40
+N = 15
 lattice = SpaceCube(N)
 lattice.xPlane()
 lattice.yPlane()
@@ -775,8 +775,8 @@ print "Fraction of the lenght of open strings", 1.0*(np.sum(lattice.length_inf))
 BC_fopen=np.loadtxt("BC_fopen.txt") 
 noBC_fopen=np.loadtxt("noBC_fopen.txt") 
 plt.figure("BC_fopen")
-plt.scatter(BC_fopen[:,0],BC_fopen[:,1], label = 'Periodic Lattice',c='r' ) 
-plt.scatter(noBC_fopen[:,0],noBC_fopen[:,1], label = 'Square Lattice',c='b' ) 
+plt.scatter(BC_fopen[:,0],BC_fopen[:,1], label = 'Periodic Lattice',c='r',marker='x',s=40 ) 
+plt.scatter(noBC_fopen[:,0],noBC_fopen[:,1], label = 'Square Lattice',c='b',marker='+',s=40 ) 
 plt.ylabel("Fraction $\it{f}_{open}$") 
 plt.xlabel("Box Size $N$")
 plt.legend(loc = 1,prop={'size': 16})
