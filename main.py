@@ -186,7 +186,7 @@ class SpaceCube:
     def isString(self,face):   
         phase = 0   
         self.faceNum+=1
-        if (np.mod(face[3] - face[0],3) == 1): #test right-most and left-most values      #                      
+        if (np.mod(face[3] - face[0],3) == 1): #test right-most and left-most values                      
             phase += 3
         elif (np.mod(face[3] - face[0],3) == 2): #test right-most and left-most values
             phase -= 3                       
