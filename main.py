@@ -73,9 +73,9 @@ class SpaceCube:
                      if (i==N-1):
                          box[N-1,j,k]=box[0,j,k]
                      if (j==N-1):
-                         box[N-1,j,k]=box[i,0,k]
+                         box[i,N-1,k]=box[i,0,k]
                      if (k==N-1):
-                         box[N-1,j,k]=box[i,j,0]
+                         box[i,j,N-1]=box[i,j,0]
         total =0 
         faceNum=0
         edge = False
