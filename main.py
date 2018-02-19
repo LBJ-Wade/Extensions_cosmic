@@ -203,7 +203,7 @@ class SpaceCube:
               #  print "In X"
                 if (self.xString[i,j,k]== +1):
                     paths+=self.xString[i+1,j,k], self.yString[i,j,k], self.yString[i,j+1,k], self.zString[i,j,k], self.zString[i,j,k+1]
-                   # print paths
+                    print "X =+1", paths
                     if paths[0] == 1:
                         out.append(0)   
                     if paths[1] == -1:
@@ -241,7 +241,7 @@ class SpaceCube:
                         
                 if (self.xString[i,j,k]== -1):
                     paths+=self.xString[i-1,j,k], self.yString[i-1,j,k], self.yString[i-1,j+1,k], self.zString[i-1,j,k], self.zString[i-1,j,k+1]
-                  #  print paths
+                    print "X =-1", paths
                     if paths[0] == -1:
                         out.append(0)   
                     if paths[1] == -1:
@@ -315,7 +315,6 @@ class SpaceCube:
                             return 'Z', i,j,k+1
                 if (self.yString[i,j,k]== -1):
                     paths+=self.xString[i,j-1,k], self.xString[i+1,j-1,k], self.yString[i,j-1,k], self.zString[i,j-1,k], self.zString[i,j-1,k+1]
-                   # print 
                     if paths[0] == -1:
                         out.append(0)
                     if paths[1] == 1:
@@ -428,13 +427,115 @@ class SpaceCube:
                                                                                                                                                                                                                                                                                                                                   
         
     def trackStrings(self):
-        self.edge = False
         self.trackCentre() #Closed Strings
+        self.edge=False
+                                                                                                              
+    def trackEdge(self):
+            """Z-Edges"""
+            for j in xrange(len(self.box[0,:,0])-1):  
+                for i in xrange(len(self.box[:,0,0])-1):
+                    k = 0
+                    if ( self.zString[i,j,k] == 1 ):
+                        """Follow"""
+                        self.L=1
+                        self.inf_coord_i=[]
+                        self.inf_coord_j=[]
+                        self.inf_coord_k=[]
+                        self.follow(self.zString,i,j,k,'Z')  
+                        self.tot_inf_coord_i.append(self.inf_coord_i)
+                        self.tot_inf_coord_j.append(self.inf_coord_j)
+                        self.tot_inf_coord_k.append(self.inf_coord_k)  
+                        self.length_inf.append(self.L)  
+                    if (self.zString[i,j,k]== -1): 
+                        k==N-1     
+                        self.follow(self.zString, i,j, k,'Z')                      
+                    k = N-1
+                    if ( self.zString[i,j,k] == -1 ):
+                        """Follow"""
+                        self.L=1
+                        self.inf_coord_i=[]
+                        self.inf_coord_j=[]
+                        self.inf_coord_k=[]
+                        self.follow(self.zString,i,j,k,'Z')
+                        self.tot_inf_coord_i.append(self.inf_coord_i)
+                        self.tot_inf_coord_j.append(self.inf_coord_j)
+                        self.tot_inf_coord_k.append(self.inf_coord_k) 
+                        self.length_inf.append(self.L)
+                    if (self.zString[i,j,k]== +1):
+                        k==0
+                        self.follow(self.zString, i,j, k,'Z') 
+            """Y-Edges"""    
+            for k in xrange(len(self.box[0,0,:])-1):
+                for i in xrange(len(self.box[:,0,0])-1):   
+                    j = 0    
+                    if ( self.yString[i,j,k] == 1 ):
+                        """Follow"""
+                        self.L=1
+                        self.inf_coord_i=[]
+                        self.inf_coord_j=[]
+                        self.inf_coord_k=[]
+                        self.follow(self.yString,i,j,k,'Y')
+                        self.tot_inf_coord_i.append(self.inf_coord_i)
+                        self.tot_inf_coord_j.append(self.inf_coord_j)
+                        self.tot_inf_coord_k.append(self.inf_coord_k)  
+                        self.length_inf.append(self.L)
+                    if (self.yString[i,j,k]== -1):  
+                        j==N-1 
+                        self.follow(self.yString, i,j, k,'Y')                                   
+                    j = N-1
+                    if ( self.yString[i,j,k] == -1 ):
+                        """Follow"""
+                        self.L=1
+                        self.inf_coord_i=[]
+                        self.inf_coord_j=[]
+                        self.inf_coord_k=[]
+                        self.follow(self.yString,i,j,k,'Y')
+                        self.tot_inf_coord_i.append(self.inf_coord_i)
+                        self.tot_inf_coord_j.append(self.inf_coord_j)
+                        self.tot_inf_coord_k.append(self.inf_coord_k) 
+                        self.length_inf.append(self.L) 
+                    if (self.yString[i,j,k]== 1):   
+                        j==0
+                        self.follow(self.yString, i,j, k,'Y') 
+            """X-Edges"""    
+            for j in xrange(len(self.box[0,:,0])-1):
+                for k in xrange(len(self.box[0,0,:])-1):    
+                    i = 0    
+                    if ( self.xString[i,j,k] == 1 ):
+                        """Follow"""
+                        self.L=1
+                        self.inf_coord_i=[]
+                        self.inf_coord_j=[]
+                        self.inf_coord_k=[]
+                        self.follow(self.xString,i,j,k,'X')
+                        self.tot_inf_coord_i.append(self.inf_coord_i)
+                        self.tot_inf_coord_j.append(self.inf_coord_j)
+                        self.tot_inf_coord_k.append(self.inf_coord_k)   
+                        self.length_inf.append(self.L)   
+                    if (self.xString[i,j,k]== -1): 
+                        i==N-1
+                        self.follow(self.xString, i,j, k,'X')                                  
+                    i = N-1
+                    if ( self.xString[i,j,k] == -1 ):
+                        """Follow"""
+                        self.L=1
+                        self.inf_coord_i=[]
+                        self.inf_coord_j=[]
+                        self.inf_coord_k=[]
+                        self.follow(self.xString,i,j,k,'X')
+                        self.tot_inf_coord_i.append(self.inf_coord_i)
+                        self.tot_inf_coord_j.append(self.inf_coord_j)
+                        self.tot_inf_coord_k.append(self.inf_coord_k) 
+                        self.length_inf.append(self.L) 
+                    if (self.xString[i,j,k]== 1):  
+                        i==0 
+                        self.follow(self.xString, i,j, k,'Y')  
                                                                                                               
     def trackCentre(self):
-        for i in xrange(len(self.box[:,0,0])-1):
-            for j in xrange(len(self.box[0,:,0])-1):
-                for k in xrange(len(self.box[0,0,:])):
+        for i in xrange(0,len(self.box[:,0,0])-1):
+            for j in xrange(0,len(self.box[0,:,0])-1):
+                for k in xrange(0,len(self.box[0,0,:])-1):
+                    if ( abs(self.zString[i,j,k]) == 1 ):
                         """Follow"""
                         self.L=0
                         self.x_min = i
@@ -443,25 +544,23 @@ class SpaceCube:
                         self.y_max = j
                         self.z_min = k
                         self.z_max = k
-                        if ( self.zString[i,j,k] == 1 and k==0):
-                            print "Run z +1"
-                            self.follow(self.zString,i,j,k,'Z')
-                        if ( self.zString[i,j,k] == -1 and k == N-1):
-                            print "Run z -1"
-                            print "i,j,k",i,j,k
-                            self.follow(self.zString,i,j,k,'Z')                              
-                        if (abs(self.zString[i,j,k]) == 1 )and((k>0 and k<N-1)):                         
-                                print "ERROR"
-                                self.follow(self.zString,i,j,k,'Z')
+                        self.loop_coord_i=[]
+                        self.loop_coord_j=[]
+                        self.loop_coord_k=[]
+                        self.follow(self.zString,i,j,k,'Z')
+                        self.tot_loop_coord_i.append(self.loop_coord_i)
+                        self.tot_loop_coord_j.append(self.loop_coord_j)
+                        self.tot_loop_coord_k.append(self.loop_coord_k)
                         self.P = 3 + (self.x_max - self.x_min) + (self.y_max - self.y_min) + (self.z_max - self.z_min)  # 3 added to match spatial dimensions
                         V = (self.x_max - self.x_min)*(self.y_max - self.y_min)*(self.z_max - self.z_min)
                         S =2.0 * ((self.x_max - self.x_min)*(self.y_max - self.y_min) + (self.y_max - self.y_min)*(self.z_max - self.z_min) + (self.z_max - self.z_min)*(self.x_max - self.x_min))
                         self.VS_ratio.append(1.0*V/S)
                         self.length_loop.append(self.L)
                         self.size_loop.append(self.P)                        
-        for i in xrange(len(self.box[:,0,0])-1):
-            for j in xrange(len(self.box[0,:,0])):
-                for k in xrange(len(self.box[0,0,:])-1):
+        for i in xrange(0,len(self.box[:,0,0])-1):
+            for j in xrange(0,len(self.box[0,:,0])-1):
+                for k in xrange(0,len(self.box[0,0,:])-1):
+                    if ( abs(self.yString[i,j,k]) == 1 ):
                         """Follow"""
                         self.L=0
                         self.x_min = i
@@ -470,21 +569,23 @@ class SpaceCube:
                         self.y_max = j
                         self.z_min = k
                         self.z_max = k
-                        if ( self.yString[i,j,k] == 1 and j==0):
-                            self.follow(self.yString,i,j,k,'Y')
-                        if ( self.yString[i,j,k] == -1 and j==N-1):
-                            self.follow(self.yString,i,j,k,'Y')                              
-                        if (abs(self.yString[i,j,k]) == 1 )and((j>0 and j<N-1)):
-                                self.follow(self.yString,i,j,k,'Y')
+                        self.loop_coord_i=[]
+                        self.loop_coord_j=[]
+                        self.loop_coord_k=[]
+                        self.follow(self.yString,i,j,k,'Y')
+                        self.tot_loop_coord_i.append(self.loop_coord_i)
+                        self.tot_loop_coord_j.append(self.loop_coord_j)
+                        self.tot_loop_coord_k.append(self.loop_coord_k)
                         self.P = 3 + (self.x_max - self.x_min) + (self.y_max - self.y_min) + (self.z_max - self.z_min)
                         V = (self.x_max - self.x_min)*(self.y_max - self.y_min)*(self.z_max - self.z_min)
                         S =2.0 * ((self.x_max - self.x_min)*(self.y_max - self.y_min) + (self.y_max - self.y_min)*(self.z_max - self.z_min) + (self.z_max - self.z_min)*(self.x_max - self.x_min))
                         self.VS_ratio.append(1.0*V/S)
                         self.length_loop.append(self.L)
                         self.size_loop.append(self.P)           
-        for i in xrange(len(self.box[:,0,0])):
-            for j in xrange(len(self.box[0,:,0])-1):
-                for k in xrange(len(self.box[0,0,:])-1): 
+        for i in xrange(0,len(self.box[:,0,0])-1):
+            for j in xrange(0,len(self.box[0,:,0])-1):
+                for k in xrange(0,len(self.box[0,0,:])-1): 
+                    if ( abs(self.xString[i,j,k]) == 1 ):
                         """Follow"""
                         self.L=0
                         self.x_min = i
@@ -493,12 +594,13 @@ class SpaceCube:
                         self.y_max = j
                         self.z_min = k
                         self.z_max = k
-                        if ( self.xString[i,j,k] == 1 and i==0):
-                            self.follow(self.xString,i,j,k,'X')
-                        if ( self.xString[i,j,k] == -1 and i==N-1):
-                            self.follow(self.xString,i,j,k,'X')                              
-                        if (abs(self.xString[i,j,k]) == 1 )and((i>0 and i<N-1)): 
-                                self.follow(self.xString,i,j,k,'X')
+                        self.loop_coord_i=[]
+                        self.loop_coord_j=[]
+                        self.loop_coord_k=[]
+                        self.follow(self.xString,i,j,k,'X')
+                        self.tot_loop_coord_i.append(self.loop_coord_i)
+                        self.tot_loop_coord_j.append(self.loop_coord_j)
+                        self.tot_loop_coord_k.append(self.loop_coord_k)
                         self.P= 3 + (self.x_max - self.x_min) + (self.y_max - self.y_min) + (self.z_max - self.z_min)
                         V = (self.x_max - self.x_min)*(self.y_max - self.y_min)*(self.z_max - self.z_min)
                         S =2.0 * ((self.x_max - self.x_min)*(self.y_max - self.y_min) + (self.y_max - self.y_min)*(self.z_max - self.z_min) + (self.z_max - self.z_min)*(self.x_max - self.x_min))
@@ -509,13 +611,19 @@ class SpaceCube:
                           
     def follow(self, xyz_strings,i,j,k,XYZ): 
         #Edge == False means looking for closed strings
-        self.string_coords.append([i,j,k]) 
-        if (i == N-1):
-            i=0
-        if (j == N-1):
-            j=0
-        if (k == N-1):
-            k=0          
+        self.string_coords.append([i,j,k])  
+        if (i==0 and XYZ=='X' and self.xString[i,j,k]==-1):
+            i==N-1
+        if (j==0 and XYZ=='Y' and self.yString[i,j,k]==-1):
+            j==N-1
+        if (k==0 and XYZ=='Z' and self.zString[i,j,k]==-1):
+            k==N-1
+        if (i==N-1 and XYZ=='X' and self.xString[i,j,k]==+1):
+            i==0
+        if (j==N-1 and XYZ=='Y' and self.yString[i,j,k]==+1):
+            j==0
+        if (k==N-1 and XYZ=='Z' and self.zString[i,j,k]==+1):
+            k==0
         n_XYZ,n_i,n_j,n_k = self.followFunc(XYZ,i,j,k)
         if (i==0 or j==0 or k==0):
             if (XYZ =='X'):
@@ -549,21 +657,21 @@ class SpaceCube:
                         self.yString[n_i,n_j,n_k]=0
                     if (n_XYZ=='Z'):
                         self.zString[n_i,n_j,n_k]=0
-                    break
-                if (n_i == 0):
-                    i=N-1
-                if (n_j == 0):
-                    j=N-1
-                if (n_k == 0):
-                    k=N-1  
-                if (n_i == N-1):
-                    n_i=0
-                if (n_j == N-1):
-                    n_j=0
-                if (n_k == N-1):
-                    n_k=0                              
+                    break                        
                 print "Face:",n_XYZ
                 print "n_",n_i,n_j,n_k
+                if (n_i==0 and XYZ=='X' and self.xString[i,j,k]==-1):
+                    n_i==N-1
+                if (n_j==0 and XYZ=='Y' and self.yString[i,j,k]==-1):
+                    n_j==N-1
+                if (n_k==0 and XYZ=='Z' and self.zString[i,j,k]==-1):
+                    n_k==N-1
+                if (n_i==N-1 and XYZ=='X' and self.xString[i,j,k]==+1):
+                    n_i==0
+                if (n_j==N-1 and XYZ=='Y' and self.yString[i,j,k]==+1):
+                    n_j==0
+                if (n_k==N-1 and XYZ=='Z' and self.zString[i,j,k]==+1):
+                    n_k==0
                 m_XYZ,m_i,m_j,m_k = self.followFunc(n_XYZ,n_i,n_j,n_k)
                 
                 if (m_i < self.x_min):
@@ -649,8 +757,6 @@ lattice = SpaceCube(N)
 lattice.xPlane()
 lattice.yPlane()
 lattice.zPlane()
-
-#print lattice.zString
 
 lattice.check_in_out_equal()
 lattice.check_num_strings()
