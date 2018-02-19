@@ -650,7 +650,7 @@ lattice.xPlane()
 lattice.yPlane()
 lattice.zPlane()
 
-print lattice.zString
+#print lattice.zString
 
 lattice.check_in_out_equal()
 lattice.check_num_strings()
