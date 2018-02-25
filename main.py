@@ -50,15 +50,21 @@ class SpaceCube:
         string_coords=[] #Want as array???
         length_inf=[]
         length_loop=[]
+        length_tot = [] #All closed
         size_loop=[]
+        size_inf=[]
         x_min = 0
         x_max = 0
         y_min = 0
         y_max = 0
         z_min = 0
         z_max = 0
+        windx = 0
+        windy = 0
+        windz = 0
         P=0 # Perimeter - called R in VV paper
-        VS_ratio = []
+        VS_ratio_inf = []
+        VS_ratio_loop = []
         self.x_min = x_min
         self.x_max = x_max
         self.y_min = y_min
@@ -66,7 +72,11 @@ class SpaceCube:
         self.z_min = z_min
         self.z_max = z_max
         self.P=P
-        self.VS_ratio = VS_ratio 
+        self.windx = windx 
+        self.windy = windy
+        self.windz = windz
+        self.VS_ratio_inf = VS_ratio_inf
+        self.VS_ratio_loop = VS_ratio_loop
         self.string_coords=string_coords
         self.sum_e2e=sum_e2e
         self.e2e=e2e
@@ -74,7 +84,9 @@ class SpaceCube:
         self.L = L
         self.length_inf=length_inf 
         self.length_loop=length_loop
+        self.length_tot = length_tot
         self.size_loop=size_loop
+        self.size_inf=size_inf
         self.box=box
         self.edge=edge  
         self.yString=yString
@@ -449,10 +461,22 @@ class SpaceCube:
                         self.y_max = j
                         self.z_min = k
                         self.z_max = k
+                        self.windx = 0
+                        self.windy = 0
+                        self.windz = 0
                         self.follow(self.zString,i,j,k,'Z')
-                        self.P = 3 + (self.x_max - self.x_min) + (self.y_max - self.y_min) + (self.z_max - self.z_min)  # 3 added to match spatial dimensions
-                        self.length_loop.append(self.L)
-                        self.size_loop.append(self.P)                        
+                        self.P = 3 + (self.x_max - self.x_min) + (self.y_max - self.y_min) + (self.z_max - self.z_min)  # 3 added to match spatial dimensions 
+                        V = (self.x_max - self.x_min)*(self.y_max - self.y_min)*(self.z_max - self.z_min)
+                        S =2.0 * ((self.x_max - self.x_min)*(self.y_max - self.y_min) + (self.y_max - self.y_min)*(self.z_max - self.z_min) + (self.z_max - self.z_min)*(self.x_max - self.x_min)) 
+                        self.length_tot.append(self.L) 
+                        if (self.windx + self.windy + self.windz)==0:
+                            self.length_loop.append(self.L)
+                            self.size_loop.append(self.P)
+                            self.VS_ratio_loop.append(1.0*V/S)
+                        if (self.windx + self.windy + self.windz)!=0: 
+                            self.length_inf.append(self.L) 
+                            self.size_inf.append(self.P)
+                            self.VS_ratio_inf.append(1.0*V/S)                    
         for i in xrange(0,len(self.box[:,0,0])-1):
             for j in xrange(0,len(self.box[0,:,0])):
                 for k in xrange(0,len(self.box[0,0,:])-1):
@@ -465,10 +489,22 @@ class SpaceCube:
                         self.y_max = j
                         self.z_min = k
                         self.z_max = k
+                        self.windx = 0
+                        self.windy = 0
+                        self.windz = 0
                         self.follow(self.yString,i,j,k,'Y')
                         self.P = 3 + (self.x_max - self.x_min) + (self.y_max - self.y_min) + (self.z_max - self.z_min)
-                        self.length_loop.append(self.L)
-                        self.size_loop.append(self.P)           
+                        V = (self.x_max - self.x_min)*(self.y_max - self.y_min)*(self.z_max - self.z_min)
+                        S =2.0 * ((self.x_max - self.x_min)*(self.y_max - self.y_min) + (self.y_max - self.y_min)*(self.z_max - self.z_min) + (self.z_max - self.z_min)*(self.x_max - self.x_min))
+                        self.length_tot.append(self.L) 
+                        if (self.windx + self.windy + self.windz)==0:
+                            self.length_loop.append(self.L) 
+                            self.size_loop.append(self.P)
+                            self.VS_ratio_loop.append(1.0*V/S) 
+                        if (self.windx + self.windy + self.windz)!=0: 
+                            self.length_inf.append(self.L) 
+                            self.size_inf.append(self.P)
+                            self.VS_ratio_inf.append(1.0*V/S)            
         for i in xrange(0,len(self.box[:,0,0])):
             for j in xrange(0,len(self.box[0,:,0])-1):
                 for k in xrange(0,len(self.box[0,0,:])-1): 
@@ -481,31 +517,48 @@ class SpaceCube:
                         self.y_max = j
                         self.z_min = k
                         self.z_max = k
+                        self.windx = 0
+                        self.windy = 0
+                        self.windz = 0
                         self.follow(self.xString,i,j,k,'X')
                         self.P= 3 + (self.x_max - self.x_min) + (self.y_max - self.y_min) + (self.z_max - self.z_min)
-                        self.length_loop.append(self.L)
-                        self.size_loop.append(self.P)                                                                                                                                                            
-                
+                        V = (self.x_max - self.x_min)*(self.y_max - self.y_min)*(self.z_max - self.z_min)
+                        S =2.0 * ((self.x_max - self.x_min)*(self.y_max - self.y_min) + (self.y_max - self.y_min)*(self.z_max - self.z_min) + (self.z_max - self.z_min)*(self.x_max - self.x_min))
+                        self.length_tot.append(self.L) 
+                        if (self.windx + self.windy + self.windz)==0:
+                            self.length_loop.append(self.L) 
+                            self.VS_ratio_loop.append(1.0*V/S)
+                            self.size_loop.append(self.P) 
+                        if (self.windx + self.windy + self.windz)!=0: 
+                            self.length_inf.append(self.L)   
+                            self.VS_ratio_inf.append(1.0*V/S)
+                            self.size_inf.append(self.P)
                           
     def follow(self, xyz_strings,i,j,k,XYZ): 
         #print "START", i,j,k, XYZ
         self.string_coords.append([i,j,k])  
         if (i==0 and XYZ=='X' and self.xString[i,j,k]==-1):
+            self.windx += -1
             i=N-1
             #print "Following X, i=0:", i,j,k
         if (j==0 and XYZ=='Y' and self.yString[i,j,k]==-1):
+            self.windy += -1
             j=N-1
             #print "Following Y, j=0:", i,j,k
         if (k==0 and XYZ=='Z' and self.zString[i,j,k]==-1):
+            self.windz += -1
             k=N-1
             #print "Following Z, k=0:", i,j,k
         if (i==N-1 and XYZ=='X' and self.xString[i,j,k]==+1):
             i=0
+            self.windx += 1
             #print "Following X, i=N:", i,j,k
         if (j==N-1 and XYZ=='Y' and self.yString[i,j,k]==+1):
+            self.windy += 1
             j=0
             #print "Following Y, j=N:", i,j,k
         if (k==N-1 and XYZ=='Z' and self.zString[i,j,k]==+1):
+            self.windz += 1
             k=0
             #print "Following Z, k=N:", i,j,k
         n_XYZ,n_i,n_j,n_k = self.followFunc(XYZ,i,j,k)
@@ -537,26 +590,32 @@ class SpaceCube:
                 #print "END", n_i, n_j, n_k
                 break                   
             if (n_i==0 and n_XYZ=='X' and self.xString[n_i,n_j,n_k]==-1):
+                self.windx += -1
                 self.xString[n_i,n_j,n_k]=0
                 n_i=N-1
                 #print "Following X, n_i=0:", n_i,n_j,n_k
             if (n_j==0 and n_XYZ=='Y' and self.yString[n_i,n_j,n_k]==-1):
+                self.windy += -1
                 self.yString[n_i,n_j,n_k]=0
                 n_j=N-1
                 #print "Following Y, n_j=0:", n_i,n_j,n_k
             if (n_k==0 and n_XYZ=='Z' and self.zString[n_i,n_j,n_k]==-1):
+                self.windz += -1
                 self.zString[n_i,n_j,n_k]=0
                 n_k=N-1
                 #print "Following Z, n_k =0:", n_i,n_j,n_k
             if (n_i==N-1 and n_XYZ=='X' and self.xString[n_i,n_j,n_k]==+1):
+                self.windx += 1
                 self.xString[n_i,n_j,n_k]=0
                 n_i=0
                 #print "Following X, n_i = N:", n_i,n_j,n_k
             if (n_j==N-1 and n_XYZ=='Y' and self.yString[n_i,n_j,n_k]==+1):
+                self.windy += 1
                 self.yString[n_i,n_j,n_k]=0
                 n_j=0
                 #print "Following Y, n_j = N:", n_i,n_j,n_k
             if (n_k==N-1 and n_XYZ=='Z' and self.zString[n_i,n_j,n_k]==+1):
+                self.windz += 1
                 self.zString[n_i,n_j,n_k]=0
                 n_k=0
                 #print "Following Z, n_k = N:", n_i,n_j,n_k
@@ -564,26 +623,32 @@ class SpaceCube:
             m_XYZ,m_i,m_j,m_k = self.followFunc(n_XYZ,n_i,n_j,n_k)
             
             if (m_i==0 and m_XYZ=='X' and self.xString[m_i,m_j,m_k]==-1):
+                self.windx += -1
                 self.xString[m_i,m_j,m_k]=0
                 m_i=N-1
                 #print "Following X, m_i=0:", m_i,m_j,m_k
             if (m_j==0 and m_XYZ=='Y' and self.yString[m_i,m_j,m_k]==-1):
+                self.windy += -1
                 self.yString[m_i,m_j,m_k]=0
                 m_j=N-1
                 #print "Following Y, m_j=0:", m_i,m_j,m_k
             if (m_k==0 and m_XYZ=='Z' and self.zString[m_i,m_j,m_k]==-1):
+                self.windz += -1
                 self.zString[m_i,m_j,m_k]=0
                 m_k=N-1
                 #print "Following Z, m_k =0:", m_i,m_j,m_k
             if (m_i==N-1 and m_XYZ=='X' and self.xString[m_i,m_j,m_k]==+1):
+                self.windx += 1
                 self.xString[m_i,m_j,m_k]=0
                 m_i=0
                 #print "Following X, m_i = N:", m_i,m_j,m_k
             if (m_j==N-1 and m_XYZ=='Y' and self.yString[m_i,m_j,m_k]==+1):
+                self.windy += 1
                 self.yString[m_i,m_j,m_k]=0
                 m_j=0
                 #print "Following Y, m_j = N:", m_i,m_j,m_k
             if (m_k==N-1 and m_XYZ=='Z' and self.zString[m_i,m_j,m_k]==+1):
+                self.windz += 1
                 self.zString[m_i,m_j,m_k]=0
                 m_k=0
                 #print "Following Z, m_k = N:", m_i,m_j,m_k
@@ -666,7 +731,7 @@ class SpaceCube:
                                         self.sum_e2e[e]+=R
         self.string_coords=[]    
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
-N = 40
+N = 20
 lattice = SpaceCube(N)
 lattice.xPlane()
 lattice.yPlane()
@@ -686,3 +751,89 @@ print "Number of closed loops", len(lattice.length_loop)
 print "Number of infinite strings", len(lattice.length_inf)
 print "Percentage of closed loops", 1.0*sum(lattice.length_loop)/sum((lattice.length_inf+lattice.length_loop))
 print "Fraction of the lenght of open strings", 1.0*(np.sum(lattice.length_inf))/(np.sum(lattice.length_inf)+np.sum(lattice.length_loop))
+L_Frac = 1.0*(np.sum(lattice.length_inf))/(np.sum(lattice.length_inf)+np.sum(lattice.length_loop))
+#np.savetxt("frac_length_40.txt", np.c_[L_Frac], fmt ='%0.6f')
+x = [14,15,18,19,20,22,24,25,30,35,40]
+size14 = np.loadtxt("frac_length_14.txt")
+size15 = np.loadtxt("frac_length_15.txt")
+size18 = np.loadtxt("frac_length_18.txt")
+size19 = np.loadtxt("frac_length_19.txt")
+size20 = np.loadtxt("frac_length_20.txt")
+size22 = np.loadtxt("frac_length_22.txt")
+size24 = np.loadtxt("frac_length_24.txt")
+size25 = np.loadtxt("frac_length_25.txt")
+size30 = np.loadtxt("frac_length_30.txt")
+size35 = np.loadtxt("frac_length_35.txt")
+size40 = np.loadtxt("frac_length_40.txt")
+l_open = [size14, size15, size18, size19, size20, size22, size24, size25, size30, size35, size40]
+plt.scatter(x, l_open)
+plt.show()
+def lin_func(x, c, m):
+    return m*x + c   
+    
+x = []
+y = []
+x_Fit = []
+y_Fit = []
+for i in xrange(0, len(lattice.VS_ratio_loop)):    
+    if lattice.VS_ratio_loop[i] != 0:
+        x.append(np.log10(lattice.size_loop[i]))
+        y.append(np.log10(lattice.VS_ratio_loop[i]))
+    #if lattice.VS_ratio_loop[i] != 0 and (lattice.size_loop[i] > 20):   #Comment out if want to include only max value of VS_ratio
+    #    x_Fit.append(np.log10(lattice.size_loop[i]))
+    #    y_Fit.append(np.log10(lattice.VS_ratio_loop[i]))  
+        
+V =np.zeros((len(lattice.size_loop), 2)) 
+V[:,0] += lattice.size_loop
+V[:,1] += lattice.VS_ratio_loop        
+for i in xrange(5, max(lattice.size_loop)+1):  #Including only max values of VS_ratio, comment out for previous x_Fit, y_Fit
+    select = (V[:,0] == i)
+    if len(V[select,0])!=0:
+        if (V[select,0][0] > 10) and len(V[select,1])!=0:
+            y_Fit.append(np.log10(max(V[select, 1])))
+            x_Fit.append(np.log10(V[select,0][0]))
+for i in xrange(len(y_Fit)):
+    check = np.isinf(y_Fit[i])
+    if check==True:
+        y_Fit[i] = 0
+        
+#x = []
+#y = []
+#x_Fit = []
+#y_Fit = []
+#for i in xrange(0, len(lattice.VS_ratio_inf)):    
+#    if lattice.VS_ratio_inf[i] != 0:
+#        x.append(np.log10(lattice.size_inf[i]))
+#        y.append(np.log10(lattice.VS_ratio_inf[i]))
+#    #if lattice.VS_ratio_loop[i] != 0 and (lattice.size_loop[i] > 20):   #Comment out if want to include only max value of VS_ratio
+#    #    x_Fit.append(np.log10(lattice.size_loop[i]))
+#    #    y_Fit.append(np.log10(lattice.VS_ratio_loop[i]))  
+#        
+#V =np.zeros((len(lattice.size_inf), 2)) 
+#V[:,0] += lattice.size_inf
+#V[:,1] += lattice.VS_ratio_inf        
+#for i in xrange(5, max(lattice.size_inf)+1):  #Including only max values of VS_ratio, comment out for previous x_Fit, y_Fit
+#    select = (V[:,0] == i)
+#    if len(V[select,0])!=0:
+#        if (V[select,0][0] > 10) and len(V[select,1])!=0:
+#            y_Fit.append(np.log10(max(V[select, 1])))
+#            x_Fit.append(np.log10(V[select,0][0]))
+#for i in xrange(len(y_Fit)):
+#    check = np.isinf(y_Fit[i])
+#    if check==True:
+#        y_Fit[i] = 0
+        
+#plt.figure("Fig.V/S")
+#plt.scatter(x, y)
+#poptVS,pcovVS = curve_fit(lin_func, x_Fit, y_Fit)
+#x_lin = np.linspace(min(x_Fit),max(x_Fit),1000)
+#plt.plot( x_lin, lin_func(x_lin,*poptVS) , c = 'blue')
+#plt.xlabel(r'$Log(Loop \ Perimeter)$', size = '18')
+#plt.ylabel(r'$Log(Volume \ to \ Surface \ ratio)$', size = '18')
+#plt.show("Fig.V/S")
+#errorVS = np.sqrt(np.diag(pcovVS))
+#poptVS[0] = 10**(poptVS[0])
+#errorVS[0] = errorVS[0]*(np.log(10))*poptVS[0]
+#errorVS[1] = errorVS[1]
+#print "[Fig.V/S] K = %.3f" %(poptVS[0]), "+/- %.3f" %(errorVS[0] )
+#print "[Fig.V/S] v = %.3f" %(poptVS[1]), "+/- %.3f" %(errorVS[1])
