@@ -731,7 +731,7 @@ class SpaceCube:
                                         self.sum_e2e[e]+=R
         self.string_coords=[]    
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
-N = 20
+N = 15
 lattice = SpaceCube(N)
 lattice.xPlane()
 lattice.yPlane()
@@ -750,10 +750,12 @@ print "Leftover strings:", np.abs(lattice.xString).sum()+np.abs(lattice.yString)
 print "Number of closed loops", len(lattice.length_loop)
 print "Number of infinite strings", len(lattice.length_inf)
 print "Percentage of closed loops", 1.0*sum(lattice.length_loop)/sum((lattice.length_inf+lattice.length_loop))
+print "N=",N
 print "Fraction of the lenght of open strings", 1.0*(np.sum(lattice.length_inf))/(np.sum(lattice.length_inf)+np.sum(lattice.length_loop))
 L_Frac = 1.0*(np.sum(lattice.length_inf))/(np.sum(lattice.length_inf)+np.sum(lattice.length_loop))
-#np.savetxt("frac_length_40.txt", np.c_[L_Frac], fmt ='%0.6f')
-x = [14,15,18,19,20,22,24,25,30,35,40]
+
+#np.savetxt("frac_length_125.txt", np.c_[L_Frac], fmt ='%0.6f')
+
 size14 = np.loadtxt("frac_length_14.txt")
 size15 = np.loadtxt("frac_length_15.txt")
 size18 = np.loadtxt("frac_length_18.txt")
@@ -765,12 +767,37 @@ size25 = np.loadtxt("frac_length_25.txt")
 size30 = np.loadtxt("frac_length_30.txt")
 size35 = np.loadtxt("frac_length_35.txt")
 size40 = np.loadtxt("frac_length_40.txt")
-l_open = [size14, size15, size18, size19, size20, size22, size24, size25, size30, size35, size40]
-plt.scatter(x, l_open)
-plt.show()
+size45 = np.loadtxt("frac_length_45.txt")
+size50 = np.loadtxt("frac_length_50.txt")
+size55 = np.loadtxt("frac_length_55.txt")
+size60 = np.loadtxt("frac_length_60.txt")
+size65 = np.loadtxt("frac_length_65.txt")
+size70 = np.loadtxt("frac_length_70.txt")
+size80 = np.loadtxt("frac_length_80.txt")
+size90 = np.loadtxt("frac_length_90.txt")
+size100 = np.loadtxt("frac_length_100.txt")
+size115 = np.loadtxt("frac_length_115.txt")
+size125 = np.loadtxt("frac_length_125.txt")
+
+plt.figure("Length Fraction: Cube Vs Toroid")
+x = [14,15,18,19,20,22,24,25,30,35,40,45,50,55,60,65,70,80,90,100,115,125]
+l_open = [size14, size15, size18, size19, size20, size22, size24, size25, size30, size35, size40, size45, size50, size55, size60, size65, size70, size80, size90, size100, size115, size125]
+l_noBC = [0.90403800000000001, 0.88257399999999997, 0.85202699999999998, 0.85005399999999998, 0.87751199999999996, 0.84775100000000003, 0.88666100000000003, 0.87615799999999999, 0.84362400000000004, 0.84077500000000005, 0.81602300000000005, 0.83438000000000001, 0.805087, 0.806504, 0.80219499999999999, 0.80300000000000005, 0.79770700000000005, 0.79191800000000001, 0.79272600000000004, 0.793713, 0.79342500000000005, 0.78392499999999998]
+plt.scatter(x, l_noBC, c = 'b')
+plt.scatter(x, l_open, c = 'r')
+plt.show("Length Fraction: Cube Vs Toroid")
+
+plt.figure("Extended! Length Fraction: Cube Vs Toroid")
+l_noBC_Extend = np.loadtxt("noBC_fopen.txt")
+l_BC_Extend = np.loadtxt("BC_fopen.txt")
+plt.scatter(l_noBC_Extend[:,0], l_noBC_Extend[:,1], c = 'b')
+plt.scatter(l_BC_Extend[:,0], l_BC_Extend[:,1], c = 'r')
+plt.show("Extended! Length Fraction: Cube Vs Toroid")
+
+
 def lin_func(x, c, m):
     return m*x + c   
-    
+
 x = []
 y = []
 x_Fit = []
