@@ -95,7 +95,7 @@ def Plot3DStrings():
 
 class SpaceCube:
     
-    def __init__(self, N):
+    def __init__(self, N,n):
         """
         Constructor that creates a cubic lattice (NxNxN) and assigns a random
         number (0, 1 or 2) to each point
@@ -107,7 +107,7 @@ class SpaceCube:
         for i in range(len(box[:,0,0])):
             for j in range(len(box[0,:,0])):
                 for k in range(len(box[0,0,:])):
-                     box[i,j,k] = randint(0, 2)
+                     box[i,j,k] = randint(0, n-1)
         total =0 
         faceNum=0
         edge = False
@@ -137,6 +137,7 @@ class SpaceCube:
         y_max = 0
         z_min = 0
         z_max = 0
+        prob_n3 = 0
         P=0 # Perimeter - called R in VV paper
         VS_ratio = []
         self.x_min = x_min
@@ -173,7 +174,8 @@ class SpaceCube:
         self.xString=xString
         self.zString=zString 
         self.total=total   
-        self.faceNum=faceNum   
+        self.faceNum=faceNum  
+        self.prob_n3 = prob_n3 
             
         self.faceDict={ 0 : [1,2,3,4],    #bottom
                         1 : [1,4,8,5],    #left
@@ -192,7 +194,7 @@ class SpaceCube:
                         8:np.array([0,1,1])}           #(  ni+1  ,  nj    ,  nk+1  )
         
       
-    def yPlane(self):
+    def yPlane(self,n):
         for j in xrange(len(self.box[0,:,0])):
             for k in xrange(len(self.box[0,0,:])-1):
                 for i in xrange(len(self.box[:,0,0])-1):                                                                  
@@ -203,9 +205,9 @@ class SpaceCube:
                         Jy = j + self.facepointsDict[ycorner][1] 
                         Ky = k + self.facepointsDict[ycorner][2] 
                         yFace[p] = self.box[Iy,Jy,Ky]
-                    self.yString[i,j,k] = self.isString(yFace)
+                    self.yString[i,j,k] = self.isString(yFace,n)
                     
-    def xPlane(self):
+    def xPlane(self,n):
         for i in xrange(len(self.box[:,0,0])):
             for j in xrange(len(self.box[0,:,0])-1):
                 for k in xrange(len(self.box[0,0,:])-1):                                                                    
@@ -216,9 +218,9 @@ class SpaceCube:
                         Jx = j + self.facepointsDict[ycorner][1] 
                         Kx = k + self.facepointsDict[ycorner][2] 
                         xFace[p] = self.box[Ix,Jx,Kx]
-                    self.xString[i,j,k] = self.isString(xFace)    
+                    self.xString[i,j,k] = self.isString(xFace,n)    
                     
-    def zPlane(self):
+    def zPlane(self,n):
         for k in xrange(len(self.box[0,0,:])):
             for j in xrange(len(self.box[0,:,0])-1):
                 for i in xrange(len(self.box[:,0,0])-1):                                                                    
@@ -229,24 +231,30 @@ class SpaceCube:
                         Jz = j + self.facepointsDict[zcorner][1] 
                         Kz = k + self.facepointsDict[zcorner][2] 
                         zFace[p] = self.box[Iz,Jz,Kz]
-                    self.zString[i,j,k] = self.isString(zFace)    
+                    self.zString[i,j,k] = self.isString(zFace,n)    
                                                                                                     
-    def isString(self,face):   
+    def isString(self,face,n):   
         phase = 0   
         self.faceNum+=1
-        if (np.mod(face[3] - face[0],3) == 1): #test right-most and left-most values                            
-            phase += 3
-        elif (np.mod(face[3] - face[0],3) == 2): #test right-most and left-most values
-            phase -= 3                       
-        for p in range(0,len(face[:]) - 1): #cycle through the rest        
-            if (np.mod(face[p] - face[p+1],3) == 1):
-                phase += 3 
-            elif (np.mod(face[p] - face[p+1],3) == 2):
-                phase -= 3              
-        if (phase == 9):
+        if (np.abs(face[0] - face[3]) <= n/2.): #test right-most and left-most values                           
+            phase += face[0] - face[3]
+        elif (face[0] - face[3] > n/2.): #test right-most and left-most values
+            phase += face[0] - face[3] - n 
+        elif (face[0] - face[3] < -n/2.): #test right-most and left-most values
+            phase += face[0] - face[3] + n    
+                                                                    
+        for p in range(0,len(face[:]) - 1): #cycle through the rest 
+            if (np.abs(face[p+1] - face[p]) <= n/2.): #test right-most and left-most values   (pi = n/2)                           
+                phase += face[p+1] - face[p]
+            elif (face[p+1] - face[p] > n/2.): #test right-most and left-most values
+                phase += face[p+1] - face[p] - n
+            elif (face[p+1] - face[p] < -n/2.): #test right-most and left-most values
+                phase += face[p+1] - face[p] + n   
+        #print"Phase:",phase                
+        if (phase == n):
             self.total +=1
             return -1 #left handed
-        elif (phase == -9 ):
+        elif (phase == -n ):
             self.total +=1
             return 1 #right handed            
         else:
@@ -284,8 +292,9 @@ class SpaceCube:
         print "Probability of no strings/cell = ", (1.0*n0)/((N-1)**3)
         print "Probability of one string/cell", (1.0*n1)/((N-1)**3)
         print "Probability of two strings/cell", (1.0*n2)/((N-1)**3)
-        print "three strings/cell = ",n3     
+        print "Probability of three strings/cell", (1.0*n3)/((N-1)**3)     
         print "Avg number of strings/unit cell:", (1.0*(n1+n2))/((N-1)**3)
+        self.prob_n3 = (1.0*n3)/((N-1)**3)
         
     def followFunc(self, XYZ, i,j,k):
            # print "In ijk: ", i, j, k
@@ -319,6 +328,19 @@ class SpaceCube:
                             return 'Z', i,j,k+1
                     if len(out) == 2:
                         choice = randint(0,1)
+                       # print "choice:", out[choice]
+                        if out[choice] == 0:
+                            return 'X', i+1,j,k
+                        if out[choice] == 1:
+                            return 'Y', i,j,k
+                        if out[choice] == 2:
+                            return 'Y', i,j+1,k
+                        if out[choice] == 3:
+                            return 'Z', i,j,k
+                        if out[choice] == 4:
+                            return 'Z', i,j,k+1
+                    if len(out) == 3:
+                        choice = randint(0,2)
                        # print "choice:", out[choice]
                         if out[choice] == 0:
                             return 'X', i+1,j,k
@@ -367,6 +389,18 @@ class SpaceCube:
                             return 'Z', i-1,j,k
                         if out[choice] == 4:
                             return 'Z', i-1,j,k+1
+                    if len(out) == 3:
+                        choice = randint(0,2)
+                        if out[choice] == 0:
+                            return 'X', i-1,j,k
+                        if out[choice] == 1:
+                            return 'Y', i-1,j,k
+                        if out[choice] == 2:
+                            return 'Y', i-1,j+1,k
+                        if out[choice] == 3:
+                            return 'Z', i-1,j,k
+                        if out[choice] == 4:
+                            return 'Z', i-1,j,k+1
             if XYZ == 'Y':
                # print "In Y"
                 if (self.yString[i,j,k]== +1):  #(-1 , 1, 1, -1, 1)
@@ -405,6 +439,19 @@ class SpaceCube:
                             return 'Z', i,j,k
                         if out[choice] == 4:
                             return 'Z', i,j,k+1
+                    if len(out) == 3:
+                        choice = randint(0,2)
+                        if out[choice] == 0:
+                            return 'X', i,j,k
+                        if out[choice] == 1:
+                            return 'X', i+1,j,k
+                        if out[choice] == 2:
+                            return 'Y', i,j+1,k
+                        if out[choice] == 3:
+                            return 'Z', i,j,k
+                        if out[choice] == 4:
+                            return 'Z', i,j,k+1         
+                            
                 if (self.yString[i,j,k]== -1):
                     paths+=self.xString[i,j-1,k], self.xString[i+1,j-1,k], self.yString[i,j-1,k], self.zString[i,j-1,k], self.zString[i,j-1,k+1]
                    # print 
@@ -431,6 +478,18 @@ class SpaceCube:
                             return 'Z', i,j-1,k+1
                     if len(out) == 2:
                         choice = randint(0,1)
+                        if out[choice] == 0:
+                            return 'X', i,j-1,k
+                        if out[choice] == 1:
+                            return 'X', i+1,j-1,k
+                        if out[choice] == 2:
+                            return 'Y', i,j-1,k
+                        if out[choice] == 3:
+                            return 'Z', i,j-1,k
+                        if out[choice] == 4:
+                            return 'Z', i,j-1,k+1
+                    if len(out) == 3:
+                        choice = randint(0,2)
                         if out[choice] == 0:
                             return 'X', i,j-1,k
                         if out[choice] == 1:
@@ -479,6 +538,19 @@ class SpaceCube:
                             return 'Y', i,j+1,k
                         if out[choice] == 4:
                             return 'Z', i,j,k+1
+                    if len(out) == 3:
+                        choice = randint(0,2)
+                        if out[choice] == 0:
+                            return 'X', i,j,k
+                        if out[choice] == 1:
+                            return 'X', i+1,j,k
+                        if out[choice] == 2:
+                            return 'Y', i,j,k
+                        if out[choice] == 3:
+                            return 'Y', i,j+1,k
+                        if out[choice] == 4:
+                            return 'Z', i,j,k+1
+                            
                 if (self.zString[i,j,k]== -1):  
                     #print "found: ",self.zString[i,j,k]
                     paths+=self.xString[i,j,k-1], self.xString[i+1,j,k-1], self.yString[i,j,k-1], self.yString[i,j+1,k-1], self.zString[i,j,k-1]
@@ -506,6 +578,18 @@ class SpaceCube:
                             return 'Z', i,j,k-1
                     if len(out) == 2:
                         choice = randint(0,1)
+                        if out[choice] == 0:
+                            return 'X', i,j,k-1
+                        if out[choice] == 1:
+                            return 'X', i+1,j,k-1
+                        if out[choice] == 2:
+                            return 'Y', i,j,k-1
+                        if out[choice] == 3:
+                            return 'Y', i,j+1,k-1
+                        if out[choice] == 4:
+                            return 'Z', i,j,k-1
+                    if len(out) == 3:
+                        choice = randint(0,2)
                         if out[choice] == 0:
                             return 'X', i,j,k-1
                         if out[choice] == 1:
@@ -846,11 +930,12 @@ class SpaceCube:
                                         self.sum_e2e[e]+=R
         self.string_coords=[]    
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
-N = 40
-lattice = SpaceCube(N)
-lattice.xPlane()
-lattice.yPlane()
-lattice.zPlane()
+N = 40 #Lattice Size
+n = 5 #Number of Phase Values
+lattice = SpaceCube(N,n)
+lattice.xPlane(n)
+lattice.yPlane(n)
+lattice.zPlane(n)
 
 lattice.check_in_out_equal()
 lattice.check_num_strings()
@@ -868,7 +953,41 @@ print "Percentage of closed loops", 1.0*sum(lattice.length_loop)/sum((lattice.le
 #Plot3DStrings()
 #PlotLengthHist()
 
+#np.savetxt("prob_vs_n_41.txt", np.c_[n,lattice.prob_n3], fmt ='%0.6f')
 
+n_3=np.loadtxt("prob_vs_n_3.txt")
+n_5=np.loadtxt("prob_vs_n_5.txt")
+n_7=np.loadtxt("prob_vs_n_7.txt")
+n_9=np.loadtxt("prob_vs_n_9.txt")
+n_11=np.loadtxt("prob_vs_n_11.txt")
+n_13=np.loadtxt("prob_vs_n_13.txt")
+n_15=np.loadtxt("prob_vs_n_15.txt")
+n_17=np.loadtxt("prob_vs_n_17.txt")
+n_19=np.loadtxt("prob_vs_n_19.txt")
+n_21=np.loadtxt("prob_vs_n_21.txt")
+n_23=np.loadtxt("prob_vs_n_23.txt")
+n_25=np.loadtxt("prob_vs_n_25.txt")
+n_27=np.loadtxt("prob_vs_n_27.txt")
+n_29=np.loadtxt("prob_vs_n_29.txt")
+n_31=np.loadtxt("prob_vs_n_31.txt")
+n_33=np.loadtxt("prob_vs_n_33.txt")
+n_35=np.loadtxt("prob_vs_n_35.txt")
+n_37=np.loadtxt("prob_vs_n_37.txt")
+n_39=np.loadtxt("prob_vs_n_39.txt")
+n_41=np.loadtxt("prob_vs_n_41.txt")
+
+plt.figure("fig.Prob3Strings")
+n_val = [n_3[0],n_5[0],n_7[0],n_9[0],n_11[0],n_13[0],n_15[0],n_17[0],n_19[0],n_21[0],n_23[0],n_25[0],n_27[0],n_29[0],n_31[0],n_33[0],n_35[0],n_37[0],n_39[0],n_41[0]]
+prob_val = [n_3[1],n_5[1],n_7[1],n_9[1],n_11[1],n_13[1],n_15[1],n_17[1],n_19[1],n_21[1],n_23[1],n_25[1],n_27[1],n_29[1],n_31[1],n_33[1],n_35[1],n_37[1],n_39[1],n_41[1]]
+np.savetxt("prob_vs_n.txt", np.c_[n_val,prob_val], fmt ='%0.6f')
+prob_vs_n = np.loadtxt("prob_vs_n.txt")
+plt.scatter(prob_vs_n[:,0],prob_vs_n[:,1])
+plt.xlabel(r'$Number \ of \ phase \ values$', size = '18')
+plt.ylabel(r'$Probability \ of \ three \ strings \ per \ cell$', size = '18')
+plt.show("fig.Prob3Strings")
+
+
+'''
 Avg_e2e = lattice.sum_e2e/lattice.count
 segment_length=[10,15,20,25,30,35,40,45,50]
 sig_e2e = np.zeros(9)
@@ -951,7 +1070,7 @@ for c in xrange(0,len(y_Fit)):
             sig_L[c] += ((np.log10(lattice.length_loop[i])-np.log10(L_Fit[c]))**2)
     if count_L[c] >3:
         sig_L[c] = np.sqrt((1./(count_L[c]-1))*sig_L[c])/np.sqrt(count_L[c])
-#sig_L[11]+= 0.8   # because at box size N = 40, sig_L has size (y_Fit -1) and this would be zero
+sig_L[10]+= 0.7   # because at box size N = 40, sig_L has size (y_Fit -1) and this would be zero
 #sig_L[14]+=0.9      #for N=55
 #sig_L[26]+= 1.2        #for N=90
                                                                                                                                     
@@ -1011,7 +1130,7 @@ for c in xrange(0,len(y_Fit)):
     if count_P[c] >3:
         sig_P[c] = np.sqrt((1./(count_P[c]-1))*sig_P[c])/np.sqrt(count_P[c])
 sig_n = (4.0*sig_P)/(x_Fit**5)
-#sig_n[11]+= 0.7  # because at box size N = 40, this would be zero
+sig_n[10]+= 0.7  # because at box size N = 40, this would be zero
 #sig_n[14]+=0.9      #for N=55
 #sig_n[20]+=0.4         #for N=90
 
@@ -1196,7 +1315,7 @@ grad_g = [Size_14[3],Size_15[3],Size_18[3],Size_19[3],Size_20[3],Size_22[3],Size
 grad_vs = [Size_14[4],Size_15[4],Size_18[4],Size_19[4],Size_20[4],Size_22[4],Size_24[4],Size_25[4],Size_30[4],Size_35[4],Size_40[4],Size_45[4],Size_50[4],Size_55[4],Size_60[4],Size_65[4],Size_70[4],Size_80[4],Size_90[4],Size_100[4],Size_115[4],Size_125[4]]
 grad_delta = [Size_14[5],Size_15[5],Size_18[5],Size_19[5],Size_20[5],Size_22[5],Size_24[5],Size_25[5],Size_30[5],Size_35[5],Size_40[5],Size_45[5],Size_50[5],Size_55[5],Size_60[5],Size_65[5],Size_70[5],Size_80[5],Size_90[5],Size_100[5],Size_115[5],Size_125[5]]
 grad_L_Frac = [Size_14[6],Size_15[6],Size_18[6],Size_19[6],Size_20[6],Size_22[6],Size_24[6],Size_25[6],Size_30[6],Size_35[6],Size_40[6],Size_45[6],Size_50[6],Size_55[6],Size_60[6],Size_65[6],Size_70[6],Size_80[6],Size_90[6],Size_100[6],Size_115[6],Size_125[6]]
-print grad_L_Frac
+#print grad_L_Frac
 x = [14,15,18,19,20,22,24,25,30,35,40,45,50,55,60,65,70,80,90,100,115,125]
 plt.figure("Fig.Param")
 plt.scatter(x, grad_vs) #, label = 'average length vs \n loop perimeter')
@@ -1205,3 +1324,4 @@ plt.title("Parameter $\it{f}_{open}$ as a function of box size")
 ax = plt.axes()
 ax.set_xticks([15,20,25,30,35,40,45,50,55,60,65,70,80,90,100, 125])
 plt.show("Fig.Param")
+'''
