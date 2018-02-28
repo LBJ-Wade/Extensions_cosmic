@@ -931,7 +931,7 @@ class SpaceCube:
         self.string_coords=[]    
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 N = 40 #Lattice Size
-n = 5 #Number of Phase Values
+n = 9999 #Number of Phase Values
 lattice = SpaceCube(N,n)
 lattice.xPlane(n)
 lattice.yPlane(n)
@@ -954,7 +954,7 @@ print "Percentage of closed loops", 1.0*sum(lattice.length_loop)/sum((lattice.le
 #PlotLengthHist()
 
 #np.savetxt("prob_vs_n_41.txt", np.c_[n,lattice.prob_n3], fmt ='%0.6f')
-
+'''
 n_3=np.loadtxt("prob_vs_n_3.txt")
 n_5=np.loadtxt("prob_vs_n_5.txt")
 n_7=np.loadtxt("prob_vs_n_7.txt")
@@ -1324,4 +1324,4 @@ plt.title("Parameter $\it{f}_{open}$ as a function of box size")
 ax = plt.axes()
 ax.set_xticks([15,20,25,30,35,40,45,50,55,60,65,70,80,90,100, 125])
 plt.show("Fig.Param")
-'''
+

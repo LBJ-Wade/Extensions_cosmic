@@ -206,13 +206,26 @@ class SpaceCube:
                         n3 += 1
                     else:
                         print "ERROR"
-        print "Tot number of strings: ", np.abs(self.xString).sum()+np.abs(self.yString).sum()+np.abs(self.zString).sum()  
+        print "Tot number of strings: ", np.abs(self.xString).sum()+np.abs(self.yString).sum()+np.abs(self.zString).sum() 
         print "Probability of no strings/cell = ", (1.0*n0)/((N-1)**3)
         print "Probability of one string/cell", (1.0*n1)/((N-1)**3)
         print "Probability of two strings/cell", (1.0*n2)/((N-1)**3)
         print "three strings/cell = ",n3     
         print "Avg number of strings/unit cell:", (1.0*(n1+n2))/((N-1)**3)
-        
+        tot = 0
+        for j in xrange(len(self.box[0,:,0])-1):
+            for k in xrange(len(self.box[0,0,:])-1):    
+                i = 0  
+                tot += np.abs(self.xString[i,j,k]).sum()
+        for k in xrange(len(self.box[0,0,:])-1):
+            for i in xrange(len(self.box[:,0,0])-1):   
+                j = 0
+                tot += np.abs(self.yString[i,j,k]).sum()
+        for j in xrange(len(self.box[0,:,0])-1):  
+            for i in xrange(len(self.box[:,0,0])-1):
+                k = 0
+                tot += np.abs(self.zString[i,j,k]).sum()
+        print "Tot segments at the boundary", tot
     def followFunc(self, XYZ, i,j,k):
             paths =[]
             out = []
