@@ -482,11 +482,11 @@ class SpaceCube:
                         V = (self.x_max - self.x_min)*(self.y_max - self.y_min)*(self.z_max - self.z_min)
                         S =2.0 * ((self.x_max - self.x_min)*(self.y_max - self.y_min) + (self.y_max - self.y_min)*(self.z_max - self.z_min) + (self.z_max - self.z_min)*(self.x_max - self.x_min)) 
                         self.length_tot.append(self.L) 
-                        if self.windx or self.windy or self.windz==0:
+                        if (self.windx==0) or (self.windy==0) or (self.windz==0):
                             self.length_loop.append(self.L)
                             self.size_loop.append(self.P)
                             self.VS_ratio_loop.append(1.0*V/S)
-                        if self.windx or self.windy or self.windz!=0: 
+                        if (self.windx!=0) or (self.windy!=0) or (self.windz!=0): 
                             self.length_inf.append(self.L) 
                             self.size_inf.append(self.P)
                             self.VS_ratio_inf.append(1.0*V/S)                    
@@ -510,11 +510,11 @@ class SpaceCube:
                         V = (self.x_max - self.x_min)*(self.y_max - self.y_min)*(self.z_max - self.z_min)
                         S =2.0 * ((self.x_max - self.x_min)*(self.y_max - self.y_min) + (self.y_max - self.y_min)*(self.z_max - self.z_min) + (self.z_max - self.z_min)*(self.x_max - self.x_min))
                         self.length_tot.append(self.L) 
-                        if self.windx or self.windy or self.windz==0:
+                        if (self.windx==0) or (self.windy==0) or (self.windz==0):
                             self.length_loop.append(self.L) 
                             self.size_loop.append(self.P)
                             self.VS_ratio_loop.append(1.0*V/S) 
-                        if self.windx or self.windy or self.windz!=0: 
+                        if (self.windx!=0) or (self.windy!=0) or (self.windz!=0): 
                             self.length_inf.append(self.L) 
                             self.size_inf.append(self.P)
                             self.VS_ratio_inf.append(1.0*V/S)            
@@ -538,11 +538,11 @@ class SpaceCube:
                         V = (self.x_max - self.x_min)*(self.y_max - self.y_min)*(self.z_max - self.z_min)
                         S =2.0 * ((self.x_max - self.x_min)*(self.y_max - self.y_min) + (self.y_max - self.y_min)*(self.z_max - self.z_min) + (self.z_max - self.z_min)*(self.x_max - self.x_min))
                         self.length_tot.append(self.L) 
-                        if self.windx or self.windy or self.windz==0:
+                        if (self.windx==0) or (self.windy==0) or (self.windz==0):
                             self.length_loop.append(self.L) 
                             self.VS_ratio_loop.append(1.0*V/S)
                             self.size_loop.append(self.P) 
-                        if self.windx or self.windy or self.windz!=0: 
+                        if (self.windx!=0) or (self.windy!=0) or (self.windz!=0): 
                             self.length_inf.append(self.L)   
                             self.VS_ratio_inf.append(1.0*V/S)
                             self.size_inf.append(self.P)
@@ -765,7 +765,7 @@ print "Number of infinite strings", len(lattice.length_inf)
 print "Percentage of closed loops", 1.0*sum(lattice.length_loop)/sum((lattice.length_inf+lattice.length_loop))
 print "N=",N
 print "Fraction of the lenght of open strings", 1.0*(np.sum(lattice.length_inf))/(np.sum(lattice.length_inf)+np.sum(lattice.length_loop))
-#L_Frac = 1.0*(np.sum(lattice.length_inf))/(np.sum(lattice.length_inf)+np.sum(lattice.length_loop))
+L_Frac = 1.0*(np.sum(lattice.length_inf))/(np.sum(lattice.length_inf)+np.sum(lattice.length_loop))
 
 #np.savetxt("frac_length_125.txt", np.c_[L_Frac], fmt ='%0.6f')
 
