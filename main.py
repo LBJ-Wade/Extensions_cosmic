@@ -11,9 +11,9 @@ import random
 from random import randint
 from mpl_toolkits.mplot3d import Axes3D  
 from scipy.optimize import curve_fit
-random.seed(36964289) #Run_1
+#random.seed(36964289) #Run_1
 #random.seed(963738)    #Run_2
-#random.seed(3854637289)  #Run_3
+random.seed(3854637289)  #Run_3
 
 np.set_printoptions(threshold='nan')
 plt.close("all")
@@ -206,7 +206,7 @@ class SpaceCube:
                         n3 += 1
                     else:
                         print "ERROR"
-        print "Tot number of strings: ", np.abs(self.xString).sum()+np.abs(self.yString).sum()+np.abs(self.zString).sum() 
+        print "Tot number of strings segments: ", np.abs(self.xString).sum()+np.abs(self.yString).sum()+np.abs(self.zString).sum() 
         print "Probability of no strings/cell = ", (1.0*n0)/((N-1)**3)
         print "Probability of one string/cell", (1.0*n1)/((N-1)**3)
         print "Probability of two strings/cell", (1.0*n2)/((N-1)**3)
@@ -482,14 +482,14 @@ class SpaceCube:
                         V = (self.x_max - self.x_min)*(self.y_max - self.y_min)*(self.z_max - self.z_min)
                         S =2.0 * ((self.x_max - self.x_min)*(self.y_max - self.y_min) + (self.y_max - self.y_min)*(self.z_max - self.z_min) + (self.z_max - self.z_min)*(self.x_max - self.x_min)) 
                         self.length_tot.append(self.L) 
-                        if (self.windx + self.windy + self.windz)==0:
-                            self.length_loop.append(self.L)
-                            self.size_loop.append(self.P)
-                            self.VS_ratio_loop.append(1.0*V/S)
-                        if (self.windx + self.windy + self.windz)!=0: 
-                            self.length_inf.append(self.L) 
-                            self.size_inf.append(self.P)
-                            self.VS_ratio_inf.append(1.0*V/S)                    
+                        #if self.windx or self.windy or self.windz==0:
+                        self.length_loop.append(self.L)
+                        self.size_loop.append(self.P)
+                        self.VS_ratio_loop.append(1.0*V/S)
+                        #if self.windx or self.windy or self.windz!=0: 
+                        #    self.length_inf.append(self.L) 
+                        #    self.size_inf.append(self.P)
+                        #    self.VS_ratio_inf.append(1.0*V/S)                    
         for i in xrange(0,len(self.box[:,0,0])-1):
             for j in xrange(0,len(self.box[0,:,0])):
                 for k in xrange(0,len(self.box[0,0,:])-1):
@@ -510,14 +510,14 @@ class SpaceCube:
                         V = (self.x_max - self.x_min)*(self.y_max - self.y_min)*(self.z_max - self.z_min)
                         S =2.0 * ((self.x_max - self.x_min)*(self.y_max - self.y_min) + (self.y_max - self.y_min)*(self.z_max - self.z_min) + (self.z_max - self.z_min)*(self.x_max - self.x_min))
                         self.length_tot.append(self.L) 
-                        if (self.windx + self.windy + self.windz)==0:
-                            self.length_loop.append(self.L) 
-                            self.size_loop.append(self.P)
-                            self.VS_ratio_loop.append(1.0*V/S) 
-                        if (self.windx + self.windy + self.windz)!=0: 
-                            self.length_inf.append(self.L) 
-                            self.size_inf.append(self.P)
-                            self.VS_ratio_inf.append(1.0*V/S)            
+                        #if self.windx or self.windy or self.windz==0:
+                        self.length_loop.append(self.L) 
+                        self.size_loop.append(self.P)
+                        self.VS_ratio_loop.append(1.0*V/S) 
+                        #if self.windx or self.windy or self.windz!=0: 
+                        #    self.length_inf.append(self.L) 
+                        #    self.size_inf.append(self.P)
+                        #    self.VS_ratio_inf.append(1.0*V/S)            
         for i in xrange(0,len(self.box[:,0,0])):
             for j in xrange(0,len(self.box[0,:,0])-1):
                 for k in xrange(0,len(self.box[0,0,:])-1): 
@@ -538,14 +538,14 @@ class SpaceCube:
                         V = (self.x_max - self.x_min)*(self.y_max - self.y_min)*(self.z_max - self.z_min)
                         S =2.0 * ((self.x_max - self.x_min)*(self.y_max - self.y_min) + (self.y_max - self.y_min)*(self.z_max - self.z_min) + (self.z_max - self.z_min)*(self.x_max - self.x_min))
                         self.length_tot.append(self.L) 
-                        if (self.windx + self.windy + self.windz)==0:
-                            self.length_loop.append(self.L) 
-                            self.VS_ratio_loop.append(1.0*V/S)
-                            self.size_loop.append(self.P) 
-                        if (self.windx + self.windy + self.windz)!=0: 
-                            self.length_inf.append(self.L)   
-                            self.VS_ratio_inf.append(1.0*V/S)
-                            self.size_inf.append(self.P)
+                        #if self.windx or self.windy or self.windz==0:
+                        self.length_loop.append(self.L) 
+                        self.VS_ratio_loop.append(1.0*V/S)
+                        self.size_loop.append(self.P) 
+                        #if self.windx or self.windy or self.windz!=0: 
+                        #    self.length_inf.append(self.L)   
+                        #    self.VS_ratio_inf.append(1.0*V/S)
+                        #    self.size_inf.append(self.P)
                           
     def follow(self, xyz_strings,i,j,k,XYZ): 
         #print "START", i,j,k, XYZ
@@ -743,8 +743,8 @@ class SpaceCube:
                                             self.e2e[e].append(R)
                                         self.sum_e2e[e]+=R
         self.string_coords=[]    
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
-N = 15
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+N = 40
 lattice = SpaceCube(N)
 lattice.xPlane()
 lattice.yPlane()
@@ -765,7 +765,7 @@ print "Number of infinite strings", len(lattice.length_inf)
 print "Percentage of closed loops", 1.0*sum(lattice.length_loop)/sum((lattice.length_inf+lattice.length_loop))
 print "N=",N
 print "Fraction of the lenght of open strings", 1.0*(np.sum(lattice.length_inf))/(np.sum(lattice.length_inf)+np.sum(lattice.length_loop))
-L_Frac = 1.0*(np.sum(lattice.length_inf))/(np.sum(lattice.length_inf)+np.sum(lattice.length_loop))
+#L_Frac = 1.0*(np.sum(lattice.length_inf))/(np.sum(lattice.length_inf)+np.sum(lattice.length_loop))
 
 #np.savetxt("frac_length_125.txt", np.c_[L_Frac], fmt ='%0.6f')
 
@@ -800,12 +800,12 @@ plt.scatter(x, l_noBC, c = 'b')
 plt.scatter(x, l_open, c = 'r')
 plt.show("Length Fraction: Cube Vs Toroid")
 
-plt.figure("Extended! Length Fraction: Cube Vs Toroid")
-l_noBC_Extend = np.loadtxt("noBC_fopen.txt")
-l_BC_Extend = np.loadtxt("BC_fopen.txt")
-plt.scatter(l_noBC_Extend[:,0], l_noBC_Extend[:,1], c = 'b')
-plt.scatter(l_BC_Extend[:,0], l_BC_Extend[:,1], c = 'r')
-plt.show("Extended! Length Fraction: Cube Vs Toroid")
+#plt.figure("Extended! Length Fraction: Cube Vs Toroid")
+#l_noBC_Extend = np.loadtxt("noBC_fopen.txt")
+#l_BC_Extend = np.loadtxt("BC_fopen.txt")
+#plt.scatter(l_noBC_Extend[:,0], l_noBC_Extend[:,1], c = 'b')
+#plt.scatter(l_BC_Extend[:,0], l_BC_Extend[:,1], c = 'r')
+#plt.show("Extended! Length Fraction: Cube Vs Toroid")
 
 
 def lin_func(x, c, m):
