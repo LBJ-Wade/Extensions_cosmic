@@ -482,14 +482,14 @@ class SpaceCube:
                         V = (self.x_max - self.x_min)*(self.y_max - self.y_min)*(self.z_max - self.z_min)
                         S =2.0 * ((self.x_max - self.x_min)*(self.y_max - self.y_min) + (self.y_max - self.y_min)*(self.z_max - self.z_min) + (self.z_max - self.z_min)*(self.x_max - self.x_min)) 
                         self.length_tot.append(self.L) 
-                        #if self.windx or self.windy or self.windz==0:
-                        self.length_loop.append(self.L)
-                        self.size_loop.append(self.P)
-                        self.VS_ratio_loop.append(1.0*V/S)
-                        #if self.windx or self.windy or self.windz!=0: 
-                        #    self.length_inf.append(self.L) 
-                        #    self.size_inf.append(self.P)
-                        #    self.VS_ratio_inf.append(1.0*V/S)                    
+                        if self.windx or self.windy or self.windz==0:
+                            self.length_loop.append(self.L)
+                            self.size_loop.append(self.P)
+                            self.VS_ratio_loop.append(1.0*V/S)
+                        if self.windx or self.windy or self.windz!=0: 
+                            self.length_inf.append(self.L) 
+                            self.size_inf.append(self.P)
+                            self.VS_ratio_inf.append(1.0*V/S)                    
         for i in xrange(0,len(self.box[:,0,0])-1):
             for j in xrange(0,len(self.box[0,:,0])):
                 for k in xrange(0,len(self.box[0,0,:])-1):
@@ -510,14 +510,14 @@ class SpaceCube:
                         V = (self.x_max - self.x_min)*(self.y_max - self.y_min)*(self.z_max - self.z_min)
                         S =2.0 * ((self.x_max - self.x_min)*(self.y_max - self.y_min) + (self.y_max - self.y_min)*(self.z_max - self.z_min) + (self.z_max - self.z_min)*(self.x_max - self.x_min))
                         self.length_tot.append(self.L) 
-                        #if self.windx or self.windy or self.windz==0:
-                        self.length_loop.append(self.L) 
-                        self.size_loop.append(self.P)
-                        self.VS_ratio_loop.append(1.0*V/S) 
-                        #if self.windx or self.windy or self.windz!=0: 
-                        #    self.length_inf.append(self.L) 
-                        #    self.size_inf.append(self.P)
-                        #    self.VS_ratio_inf.append(1.0*V/S)            
+                        if self.windx or self.windy or self.windz==0:
+                            self.length_loop.append(self.L) 
+                            self.size_loop.append(self.P)
+                            self.VS_ratio_loop.append(1.0*V/S) 
+                        if self.windx or self.windy or self.windz!=0: 
+                            self.length_inf.append(self.L) 
+                            self.size_inf.append(self.P)
+                            self.VS_ratio_inf.append(1.0*V/S)            
         for i in xrange(0,len(self.box[:,0,0])):
             for j in xrange(0,len(self.box[0,:,0])-1):
                 for k in xrange(0,len(self.box[0,0,:])-1): 
@@ -538,14 +538,14 @@ class SpaceCube:
                         V = (self.x_max - self.x_min)*(self.y_max - self.y_min)*(self.z_max - self.z_min)
                         S =2.0 * ((self.x_max - self.x_min)*(self.y_max - self.y_min) + (self.y_max - self.y_min)*(self.z_max - self.z_min) + (self.z_max - self.z_min)*(self.x_max - self.x_min))
                         self.length_tot.append(self.L) 
-                        #if self.windx or self.windy or self.windz==0:
-                        self.length_loop.append(self.L) 
-                        self.VS_ratio_loop.append(1.0*V/S)
-                        self.size_loop.append(self.P) 
-                        #if self.windx or self.windy or self.windz!=0: 
-                        #    self.length_inf.append(self.L)   
-                        #    self.VS_ratio_inf.append(1.0*V/S)
-                        #    self.size_inf.append(self.P)
+                        if self.windx or self.windy or self.windz==0:
+                            self.length_loop.append(self.L) 
+                            self.VS_ratio_loop.append(1.0*V/S)
+                            self.size_loop.append(self.P) 
+                        if self.windx or self.windy or self.windz!=0: 
+                            self.length_inf.append(self.L)   
+                            self.VS_ratio_inf.append(1.0*V/S)
+                            self.size_inf.append(self.P)
                           
     def follow(self, xyz_strings,i,j,k,XYZ): 
         #print "START", i,j,k, XYZ
