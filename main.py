@@ -850,30 +850,40 @@ print "[Fig.V/S] v = %.3f" %(poptVS[1]), "+/- %.3f" %(errorVS[1])
 A = np.array(lattice.length_tot)
 n = []
 length = []
+count_L = []
 x_Fit = []
 y_Fit = []
-#error = []
+L_Fit = []
 for i in xrange(5, max(lattice.length_tot)):
     select = (A[:] == i)
     if len(A[select])!=0:
         n.append(1.0*len(A[select])/(N**3))
         length.append(A[select][0])
+        count_L.append(len(A[select]))
     #if len(A[select])!=0 and A[select][0] < 200:  #large fit that includes lengths up to 200
     if len(A[select])>4:
         x_Fit.append(np.log10(A[select][0]))
         y_Fit.append(np.log10(1.0*len(A[select])/(N**3)))
-        #if len(A[select])>4:           # made up error for large fit
-        #    error.append(float(0.02))
-        #else: 
-        #    error.append(float(0.5))
+        L_Fit.append(A[select][0])
+x_Fit = np.log10(L_Fit)     
 print "R_cut", 10**max(x_Fit)     
 x = np.log10(length)    
 y = np.log10(n)  
-error = np.array([0.0139245,0.03301856,0.03935903,0.05793894,0.08754634,0.14803106,0.41516239,0.68200527,0.48029012,0.48452575,0.94056602,0.89266203,0.90000000, 0.950000], dtype = 'float')
+sig_L=np.zeros(len(y_Fit))   #change y_Fit to Avg_L for the error on all data points
+for c in xrange(0,len(y_Fit)):
+    for i in xrange(0,len(count_L)):
+        if count_L[c] >4:
+            sig_L[c] += ((np.log10(lattice.length_loop[i])-np.log10(L_Fit[c]))**2)
+    if count_L[c] >4:
+        sig_L[c] = np.sqrt((1./(count_L[c]-1))*sig_L[c])/np.sqrt(count_L[c]) 
+sig_L[11]= 0.8
+sig_L[13] += 0.68
+error = (sig_L*(5/2))/(x_Fit**(3/2)) 
+ 
 
 plt.figure("Fig.6")
 plt.scatter(x, y, label = "Periodic boundary conditions")
-#plt.errorbar(x, y ,xerr = 0, yerr = error, fmt ='o', c = 'blue')
+plt.errorbar(x_Fit, y_Fit ,xerr = 0, yerr = error, fmt ='o', c = 'blue')
 popt4,pcov4 = curve_fit(lin_func, x_Fit, y_Fit, sigma = error) 
 x_lin_Fit = np.linspace(min(x_Fit),max(x_Fit),500)
 plt.plot( x_lin_Fit, lin_func(x_lin_Fit,*popt4) , c = 'blue')
