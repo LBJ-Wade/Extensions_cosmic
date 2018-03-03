@@ -766,36 +766,36 @@ L_Frac = 1.0*(np.sum(lattice.length_inf))/(np.sum(lattice.length_inf)+np.sum(lat
 
 #np.savetxt("frac_length_125.txt", np.c_[L_Frac], fmt ='%0.6f')
 
-#size14 = np.loadtxt("frac_length_14.txt")
-#size15 = np.loadtxt("frac_length_15.txt")
-#size18 = np.loadtxt("frac_length_18.txt")
-#size19 = np.loadtxt("frac_length_19.txt")
-#size20 = np.loadtxt("frac_length_20.txt")
-#size22 = np.loadtxt("frac_length_22.txt")
-#size24 = np.loadtxt("frac_length_24.txt")
-#size25 = np.loadtxt("frac_length_25.txt")
-#size30 = np.loadtxt("frac_length_30.txt")
-#size35 = np.loadtxt("frac_length_35.txt")
-#size40 = np.loadtxt("frac_length_40.txt")
-#size45 = np.loadtxt("frac_length_45.txt")
-#size50 = np.loadtxt("frac_length_50.txt")
-#size55 = np.loadtxt("frac_length_55.txt")
-#size60 = np.loadtxt("frac_length_60.txt")
-#size65 = np.loadtxt("frac_length_65.txt")
-#size70 = np.loadtxt("frac_length_70.txt")
-#size80 = np.loadtxt("frac_length_80.txt")
-#size90 = np.loadtxt("frac_length_90.txt")
-#size100 = np.loadtxt("frac_length_100.txt")
-#size115 = np.loadtxt("frac_length_115.txt")
-#size125 = np.loadtxt("frac_length_125.txt")
-#
-#plt.figure("Length Fraction: Cube Vs Toroid")
-#x = [14,15,18,19,20,22,24,25,30,35,40,45,50,55,60,65,70,80,90,100,115,125]
-#l_open = [size14, size15, size18, size19, size20, size22, size24, size25, size30, size35, size40, size45, size50, size55, size60, size65, size70, size80, size90, size100, size115, size125]
-#l_noBC = [0.90403800000000001, 0.88257399999999997, 0.85202699999999998, 0.85005399999999998, 0.87751199999999996, 0.84775100000000003, 0.88666100000000003, 0.87615799999999999, 0.84362400000000004, 0.84077500000000005, 0.81602300000000005, 0.83438000000000001, 0.805087, 0.806504, 0.80219499999999999, 0.80300000000000005, 0.79770700000000005, 0.79191800000000001, 0.79272600000000004, 0.793713, 0.79342500000000005, 0.78392499999999998]
-#plt.scatter(x, l_noBC, c = 'b')
-#plt.scatter(x, l_open, c = 'r')
-#plt.show("Length Fraction: Cube Vs Toroid")
+size14 = np.loadtxt("frac_length_14.txt")
+size15 = np.loadtxt("frac_length_15.txt")
+size18 = np.loadtxt("frac_length_18.txt")
+size19 = np.loadtxt("frac_length_19.txt")
+size20 = np.loadtxt("frac_length_20.txt")
+size22 = np.loadtxt("frac_length_22.txt")
+size24 = np.loadtxt("frac_length_24.txt")
+size25 = np.loadtxt("frac_length_25.txt")
+size30 = np.loadtxt("frac_length_30.txt")
+size35 = np.loadtxt("frac_length_35.txt")
+size40 = np.loadtxt("frac_length_40.txt")
+size45 = np.loadtxt("frac_length_45.txt")
+size50 = np.loadtxt("frac_length_50.txt")
+size55 = np.loadtxt("frac_length_55.txt")
+size60 = np.loadtxt("frac_length_60.txt")
+size65 = np.loadtxt("frac_length_65.txt")
+size70 = np.loadtxt("frac_length_70.txt")
+size80 = np.loadtxt("frac_length_80.txt")
+size90 = np.loadtxt("frac_length_90.txt")
+size100 = np.loadtxt("frac_length_100.txt")
+size115 = np.loadtxt("frac_length_115.txt")
+size125 = np.loadtxt("frac_length_125.txt")
+
+plt.figure("Length Fraction: Cube Vs Toroid")
+x = [14,15,18,19,20,22,24,25,30,35,40,45,50,55,60,65,70,80,90,100,115,125]
+l_open = [size14, size15, size18, size19, size20, size22, size24, size25, size30, size35, size40, size45, size50, size55, size60, size65, size70, size80, size90, size100, size115, size125]
+l_noBC = [0.90403800000000001, 0.88257399999999997, 0.85202699999999998, 0.85005399999999998, 0.87751199999999996, 0.84775100000000003, 0.88666100000000003, 0.87615799999999999, 0.84362400000000004, 0.84077500000000005, 0.81602300000000005, 0.83438000000000001, 0.805087, 0.806504, 0.80219499999999999, 0.80300000000000005, 0.79770700000000005, 0.79191800000000001, 0.79272600000000004, 0.793713, 0.79342500000000005, 0.78392499999999998]
+plt.scatter(x, l_noBC, c = 'b')
+plt.scatter(x, l_open, c = 'r')
+plt.show("Length Fraction: Cube Vs Toroid")
 
 #plt.figure("Extended! Length Fraction: Cube Vs Toroid")
 #l_noBC_Extend = np.loadtxt("noBC_fopen.txt")
@@ -820,7 +820,7 @@ for i in xrange(0, len(lattice.VS_ratio_loop)):
 V =np.zeros((len(lattice.size_loop), 2)) 
 V[:,0] += lattice.size_loop
 V[:,1] += lattice.VS_ratio_loop        
-for i in xrange(5, 40):  #max(lattice.size_loop)+1
+for i in xrange(5, 40):  #use max(lattice.size_loop)+1 to include all sizes (but sizes larger than 40 aren't really correct for periodic BC)
     select = (V[:,0] == i)
     if len(V[select,0])!=0:
         if (V[select,0][0] > 10) and len(V[select,1])!=0:
@@ -847,68 +847,28 @@ errorVS[1] = errorVS[1]
 print "[Fig.V/S] K = %.3f" %(poptVS[0]), "+/- %.3f" %(errorVS[0] )
 print "[Fig.V/S] v = %.3f" %(poptVS[1]), "+/- %.3f" %(errorVS[1])
 
-Error_Range = []
-Avg_L = []
-P_Range = []
-count_L=[]
-P_Fit=[]
-L_Fit=[]
-A = np.zeros((len(lattice.size_loop), 2))
-A[:,0] += lattice.length_loop
-A[:,1] += lattice.size_loop
-#i = 0
-for i in xrange(5, max(lattice.size_loop)):
-    select = (A[:,1] == i)
-    if (len(A[select,0])!=0) and (A[select,1][0]>5):
-    #if (len(A[select,0])!=0):
-        Avg_L.append(sum(A[select,0])/len(A[select,0]))
-        P_Range.append(A[select,1][0])
-        count_L.append(len(A[select,0]))
-        if(len(A[select,0])>4):
-            P_Fit.append(A[select,1][0])
-            L_Fit.append(sum(A[select,0])/len(A[select,0]))
-
-x = np.log10(P_Range)            
-y = np.log10(Avg_L)
-x_Fit = np.log10(P_Fit)
-y_Fit = np.log10(L_Fit)
-
-sig_L=np.zeros(len(y_Fit))   #change y_Fit to Avg_L for the error on all data points
-for c in xrange(0,len(y_Fit)):
-    for i in xrange(0,len(count_L)):
-        if count_L[c] >3:
-            sig_L[c] += ((np.log10(lattice.length_loop[i])-np.log10(L_Fit[c]))**2)
-    if count_L[c] >3:
-        sig_L[c] = np.sqrt((1./(count_L[c]-1))*sig_L[c])/np.sqrt(count_L[c])
+A = np.array(lattice.length_tot)
 n = []
-L_Range = []
-P_Range = []  #redefine  P_Range if cutting at R_c for in the plot above
-count_P = []
-P_Fit = []
-L_Fit = []
-n_Fit = []
-for i in xrange(5, max(lattice.size_loop)):
-    select = (A[:,1] == i)
-    if (len(A[select,0])!=0) and (A[select,1][0]>5):
-        n.append(1.0*len(A[select,1])/(N**3))
-        L_Range.append(A[select,0][0])
-        P_Range.append(A[select,1][0])
-        count_P.append(len(A[select,1]))
-        if(len(A[select,0])>4):
-            P_Fit.append(A[select,1][0])
-            L_Fit.append(A[select,0][0])
-            n_Fit.append(1.0*len(A[select,1])/(N**3))
-x = np.log10(L_Range)
-y = np.log10(n)
-x_Fit = np.log10(L_Fit)
-y_Fit = np.log10(n_Fit)
+length = []
+error = []
+x_Fit = []
+y_Fit = []
+for i in xrange(5, max(lattice.length_tot)):
+    select = (A[:] == i)
+    if len(A[select])!=0:
+        n.append(1.0*len(A[select])/(N**3))
+        length.append(A[select][0])
+    if len(A[select])>4:
+        x_Fit.append(np.log10(A[select][0]))
+        y_Fit.append(np.log10(1.0*len(A[select])/(N**3)))
 
-sig_n2 = (sig_L*(5/2))/(x_Fit**(3/2))   
+x = np.log10(length)    
+y = np.log10(n)  
 
 plt.figure("Fig.6")
 plt.scatter(x, y)
-plt.errorbar(x_Fit, y_Fit ,xerr = 0, yerr = sig_n2, fmt ='o', c = 'blue')
-popt4,pcov4 = curve_fit(lin_func, x_Fit, y_Fit, sigma = sig_n2)
+#plt.errorbar(x, y ,xerr = 0, yerr = error, fmt ='o', c = 'blue')
+popt4,pcov4 = curve_fit(lin_func, x_Fit, y_Fit) 
 x_lin_Fit = np.linspace(min(x_Fit),max(x_Fit),500)
 plt.plot( x_lin_Fit, lin_func(x_lin_Fit,*popt4) , c = 'blue')
 error4 = np.sqrt(np.diag(pcov4))
