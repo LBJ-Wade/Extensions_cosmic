@@ -866,7 +866,7 @@ for i in xrange(5, max(lattice.length_tot)):
         #    error.append(float(0.02))
         #else: 
         #    error.append(float(0.5))
-      
+print "R_cut", 10**max(x_Fit)     
 x = np.log10(length)    
 y = np.log10(n)  
 
