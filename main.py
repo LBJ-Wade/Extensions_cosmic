@@ -850,23 +850,28 @@ print "[Fig.V/S] v = %.3f" %(poptVS[1]), "+/- %.3f" %(errorVS[1])
 A = np.array(lattice.length_tot)
 n = []
 length = []
-error = []
 x_Fit = []
 y_Fit = []
+error = []
 for i in xrange(5, max(lattice.length_tot)):
     select = (A[:] == i)
     if len(A[select])!=0:
         n.append(1.0*len(A[select])/(N**3))
         length.append(A[select][0])
+    #if len(A[select])!=0 and A[select][0] < 200:  #large fit that includes lengths up to 200
     if len(A[select])>4:
         x_Fit.append(np.log10(A[select][0]))
         y_Fit.append(np.log10(1.0*len(A[select])/(N**3)))
-
+        #if len(A[select])>4:           # made up error for large fit
+        #    error.append(float(0.02))
+        #else: 
+        #    error.append(float(0.5))
+      
 x = np.log10(length)    
 y = np.log10(n)  
 
 plt.figure("Fig.6")
-plt.scatter(x, y)
+plt.scatter(x, y, label = "Periodic boundary conditions")
 #plt.errorbar(x, y ,xerr = 0, yerr = error, fmt ='o', c = 'blue')
 popt4,pcov4 = curve_fit(lin_func, x_Fit, y_Fit) 
 x_lin_Fit = np.linspace(min(x_Fit),max(x_Fit),500)
@@ -877,6 +882,7 @@ error4[0] = error4[0]*(np.log(10))*popt4[0]
 error4[1] = error4[1]
 plt.xlabel(r'$Log(Loop \ Length)$', size = '18')
 plt.ylabel(r'$Log(Density)$', size = '18')
+plt.legend(loc = 1,prop={'size': 16})
 plt.show("Fig.6")
 print "[Fig.6] C = %.3f" %(popt4[0]), "+/- %.3f" %(error4[0] )
 print "[Fig.6] g = %.3f" %(-popt4[1]), "+/- %.3f" %(error4[1])
