@@ -852,7 +852,7 @@ n = []
 length = []
 x_Fit = []
 y_Fit = []
-error = []
+#error = []
 for i in xrange(5, max(lattice.length_tot)):
     select = (A[:] == i)
     if len(A[select])!=0:
@@ -869,11 +869,12 @@ for i in xrange(5, max(lattice.length_tot)):
 print "R_cut", 10**max(x_Fit)     
 x = np.log10(length)    
 y = np.log10(n)  
+error = np.array([0.0139245,0.03301856,0.03935903,0.05793894,0.08754634,0.14803106,0.41516239,0.68200527,0.48029012,0.48452575,0.94056602,0.89266203,0.90000000, 0.950000], dtype = 'float')
 
 plt.figure("Fig.6")
 plt.scatter(x, y, label = "Periodic boundary conditions")
 #plt.errorbar(x, y ,xerr = 0, yerr = error, fmt ='o', c = 'blue')
-popt4,pcov4 = curve_fit(lin_func, x_Fit, y_Fit) 
+popt4,pcov4 = curve_fit(lin_func, x_Fit, y_Fit, sigma = error) 
 x_lin_Fit = np.linspace(min(x_Fit),max(x_Fit),500)
 plt.plot( x_lin_Fit, lin_func(x_lin_Fit,*popt4) , c = 'blue')
 error4 = np.sqrt(np.diag(pcov4))
