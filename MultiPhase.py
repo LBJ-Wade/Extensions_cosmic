@@ -213,10 +213,10 @@ class SpaceCube:
                 for k in xrange(len(self.box[0,0,:])-1):                                                                    
                     xFace = np.zeros(4)
                     for p in range(4): 
-                        ycorner = self.faceDict[1][p]    
-                        Ix = i + self.facepointsDict[ycorner][0] 
-                        Jx = j + self.facepointsDict[ycorner][1] 
-                        Kx = k + self.facepointsDict[ycorner][2] 
+                        xcorner = self.faceDict[1][p]    
+                        Ix = i + self.facepointsDict[xcorner][0] 
+                        Jx = j + self.facepointsDict[xcorner][1] 
+                        Kx = k + self.facepointsDict[xcorner][2] 
                         xFace[p] = self.box[Ix,Jx,Kx]
                     self.xString[i,j,k] = self.isString(xFace,n)    
                     
@@ -928,14 +928,139 @@ class SpaceCube:
                                             self.count[e]+=1
                                             self.e2e[e].append(R)
                                         self.sum_e2e[e]+=R
-        self.string_coords=[]    
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+        self.string_coords=[] 
+           
+    def prob_of_3(self,n):
+        N=2
+        s_box = np.zeros((N,N,N)) #(i, j, k) 
+        s_yString = np.zeros((N-1,N,N-1))
+        s_xString = np.zeros((N,N-1,N-1))
+        s_zString = np.zeros((N-1,N-1,N))
+        num = 0
+        n0 = 0
+        n1 = 0
+        n2 = 0
+        n3 = 0
+        num_of_boxes = 0
+        print "-----------------------------------------------" 
+        print "Run: n = ",n
+        print "-----------------------------------------------" 
+        for c_1 in xrange(0,n):
+            print "Calculating Cell:",c_1+1,"/",n
+            for c_2 in xrange(0,n):
+                print "    -",c_2+1,"/",n
+                for c_3 in xrange(0,n):
+                    for c_4 in xrange(0,n):
+                        for c_5 in xrange(0,n):
+                            for c_6 in xrange(0,n):
+                                for c_7 in xrange(0,n):
+                                    for c_8 in xrange(0,n):
+                                        s_box[0,0,0] = c_1
+                                        s_box[0,0,1] = c_2
+                                        s_box[0,1,0] = c_3
+                                        s_box[0,1,1] = c_4
+                                        s_box[1,0,0] = c_5
+                                        s_box[1,0,1] = c_6
+                                        s_box[1,1,0] = c_7
+                                        s_box[1,1,1] = c_8
+                                        num_of_boxes+=1
+                                
+                                        for j in xrange(len(s_box[0,:,0])):
+                                            for k in xrange(len(s_box[0,0,:])-1):
+                                                for i in xrange(len(s_box[:,0,0])-1):                                                                  
+                                                    yFace = np.zeros(4)
+                                                    for p in range(4): 
+                                                        ycorner = self.faceDict[0][p]    
+                                                        Iy = i + self.facepointsDict[ycorner][0] 
+                                                        Jy = j + self.facepointsDict[ycorner][1] 
+                                                        Ky = k + self.facepointsDict[ycorner][2] 
+                                                        yFace[p] = s_box[Iy,Jy,Ky]
+                                                    #print "yFace:",yFace
+                                                    s_yString[i,j,k] = self.isString(yFace,n)
+                                            
+                                        for i in xrange(len(s_box[:,0,0])):
+                                            for j in xrange(len(s_box[0,:,0])-1):
+                                                for k in xrange(len(s_box[0,0,:])-1):                                                                   
+                                                    xFace = np.zeros(4)
+                                                    for p in range(4): 
+                                                        xcorner = self.faceDict[1][p]    
+                                                        Ix = i + self.facepointsDict[xcorner][0] 
+                                                        Jx = j + self.facepointsDict[xcorner][1] 
+                                                        Kx = k + self.facepointsDict[xcorner][2] 
+                                                        xFace[p] = s_box[Ix,Jx,Kx]
+                                                    #print "xFace:",xFace
+                                                    s_xString[i,j,k] = self.isString(xFace,n)    
+                                                    
+                                    
+                                        for k in xrange(len(s_box[0,0,:])):
+                                            for j in xrange(len(s_box[0,:,0])-1):
+                                                for i in xrange(len(s_box[:,0,0])-1):                                                                    
+                                                    zFace = np.zeros(4)
+                                                    for p in range(4): 
+                                                        zcorner = self.faceDict[2][p]  
+                                                        Iz = i + self.facepointsDict[zcorner][0] 
+                                                        Jz = j + self.facepointsDict[zcorner][1] 
+                                                        Kz = k + self.facepointsDict[zcorner][2] 
+                                                        zFace[p] = s_box[Iz,Jz,Kz]
+                                                    #print "zFace:",zFace
+                                                    s_zString[i,j,k] = self.isString(zFace,n)  
+                                        #print"s_xString:",s_xString 
+                                        #print"s_yString:",s_xString 
+                                        #print"s_zString:",s_xString 
+                                                             
+                                        num = np.abs(s_xString[0+1,0,0])+np.abs(s_xString[0,0,0]) + np.abs(s_zString[0,0,0+1])+np.abs(s_zString[0,0,0]) + np.abs(s_yString[0,0+1,0])+np.abs(s_yString[0,0,0])  
+                                        if (num == 0):
+                                            n0 += 1
+                                        elif (num == 2):
+                                            n1 += 1
+                                        elif (num ==4):
+                                            n2 += 1
+                                        elif (num ==6):
+                                            n3 += 1
+                                        else:
+                                            print "ERROR"
+        '''                                      
+        print "-----------------------------------------------"  
+        print "Single Cell: Tot number of strings: ", np.abs(s_xString).sum()+np.abs(s_yString).sum()+np.abs(s_zString).sum()  
+        print "Single Cell: Probability of no strings/cell = ", (1.0*n0)/((N-1)**3)
+        print "Single Cell: Probability of one string/cell", (1.0*n1)/((N-1)**3)
+        print "Single Cell: Probability of two strings/cell", (1.0*n2)/((N-1)**3)
+        print "Single Cell: Probability of three strings/cell", (1.0*n3)/((N-1)**3)     
+        print "Single Cell: Avg number of strings/unit cell:", (1.0*(n1+n2))/((N-1)**3)
+        print "-----------------------------------------------"          
+        '''
+        return (1.0*n3)/(((N-1)**3) * num_of_boxes)  
+        
+    def run_prob_of_3(self,min_n,n):
+        print "#########################################################"
+        phase_max = n
+        
+        cell_n3 = [] 
+        cell_phase = []
+        ProbOf3 = 0
+        for s_n in xrange(min_n,phase_max+2,2):
+            ProbOf3 = lattice.prob_of_3(s_n)
+            cell_n3.append(ProbOf3)
+            np.savetxt("ProbOf3_"+str(s_n)+".txt", np.c_[s_n,ProbOf3], fmt ='%0.9f')
+            #print "Saving n[",s_n,"] data..."
+            cell_phase.append(s_n)
+        print "#########################################################"
+        plt.figure("fig.Prob3Strings/Cell")
+        plt.scatter(cell_phase,cell_n3)
+        plt.xlabel(r'$Number \ of \ phase \ values$', size = '18')
+        plt.ylabel(r'$Probability \ of \ three \ strings \ per \ cell$', size = '18')
+        plt.show("fig.Prob3Strings\Cell")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
 N = 40 #Lattice Size
-n = 9999 #Number of Phase Values
+n = 5 #Number of Phase Values
 lattice = SpaceCube(N,n)
 lattice.xPlane(n)
 lattice.yPlane(n)
 lattice.zPlane(n)
+
+min_n = 5
+max_n = 5
+#lattice.run_prob_of_3(min_n,max_n)
 
 lattice.check_in_out_equal()
 lattice.check_num_strings()
@@ -954,7 +1079,8 @@ print "Percentage of closed loops", 1.0*sum(lattice.length_loop)/sum((lattice.le
 #PlotLengthHist()
 
 #np.savetxt("prob_vs_n_41.txt", np.c_[n,lattice.prob_n3], fmt ='%0.6f')
-'''
+
+
 n_3=np.loadtxt("prob_vs_n_3.txt")
 n_5=np.loadtxt("prob_vs_n_5.txt")
 n_7=np.loadtxt("prob_vs_n_7.txt")
@@ -975,13 +1101,23 @@ n_35=np.loadtxt("prob_vs_n_35.txt")
 n_37=np.loadtxt("prob_vs_n_37.txt")
 n_39=np.loadtxt("prob_vs_n_39.txt")
 n_41=np.loadtxt("prob_vs_n_41.txt")
-
-plt.figure("fig.Prob3Strings")
 n_val = [n_3[0],n_5[0],n_7[0],n_9[0],n_11[0],n_13[0],n_15[0],n_17[0],n_19[0],n_21[0],n_23[0],n_25[0],n_27[0],n_29[0],n_31[0],n_33[0],n_35[0],n_37[0],n_39[0],n_41[0]]
 prob_val = [n_3[1],n_5[1],n_7[1],n_9[1],n_11[1],n_13[1],n_15[1],n_17[1],n_19[1],n_21[1],n_23[1],n_25[1],n_27[1],n_29[1],n_31[1],n_33[1],n_35[1],n_37[1],n_39[1],n_41[1]]
+
+cell_n_3=np.loadtxt("ProbOf3_3.txt")
+cell_n_5=np.loadtxt("ProbOf3_5.txt")
+cell_n_7=np.loadtxt("ProbOf3_7.txt")
+cell_n_9=np.loadtxt("ProbOf3_9.txt")
+cell_n_11=np.loadtxt("ProbOf3_11.txt")
+cell_n_val = [cell_n_3[0],cell_n_5[0],cell_n_7[0],cell_n_9[0],cell_n_11[0]]
+cell_prob_val = [cell_n_3[1],cell_n_5[1],cell_n_7[1],cell_n_9[1],cell_n_11[1]]
+
+plt.figure("fig.Prob3Strings")
+
 np.savetxt("prob_vs_n.txt", np.c_[n_val,prob_val], fmt ='%0.6f')
 prob_vs_n = np.loadtxt("prob_vs_n.txt")
-plt.scatter(prob_vs_n[:,0],prob_vs_n[:,1])
+plt.scatter(prob_vs_n[:,0],prob_vs_n[:,1], marker='o', s=40, edgecolor='#1f77b4', c = '#1f77b4', label = r"$Whole Lattice$")
+plt.scatter(cell_n_val,cell_prob_val, marker='o', s=40, edgecolor='#d62728', c='#d62728', label = r"$Whole Lattice$")
 plt.xlabel(r'$Number \ of \ phase \ values$', size = '18')
 plt.ylabel(r'$Probability \ of \ three \ strings \ per \ cell$', size = '18')
 plt.show("fig.Prob3Strings")
@@ -1324,4 +1460,4 @@ plt.title("Parameter $\it{f}_{open}$ as a function of box size")
 ax = plt.axes()
 ax.set_xticks([15,20,25,30,35,40,45,50,55,60,65,70,80,90,100, 125])
 plt.show("Fig.Param")
-
+'''
