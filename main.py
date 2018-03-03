@@ -63,7 +63,7 @@ class SpaceCube:
         windy = 0
         windz = 0
         P=0 # Perimeter - called R in VV paper
-        VS_ratio_inf = []
+        #VS_ratio_inf = []
         VS_ratio_loop = []
         self.x_min = x_min
         self.x_max = x_max
@@ -75,7 +75,7 @@ class SpaceCube:
         self.windx = windx 
         self.windy = windy
         self.windz = windz
-        self.VS_ratio_inf = VS_ratio_inf
+        #self.VS_ratio_inf = VS_ratio_inf
         self.VS_ratio_loop = VS_ratio_loop
         self.string_coords=string_coords
         self.sum_e2e=sum_e2e
@@ -488,8 +488,7 @@ class SpaceCube:
                             self.VS_ratio_loop.append(1.0*V/S)
                         if (self.windx!=0) or (self.windy!=0) or (self.windz!=0): 
                             self.length_inf.append(self.L) 
-                            self.size_inf.append(self.P)
-                            self.VS_ratio_inf.append(1.0*V/S)                    
+                            self.size_inf.append(self.P)                   
         for i in xrange(0,len(self.box[:,0,0])-1):
             for j in xrange(0,len(self.box[0,:,0])):
                 for k in xrange(0,len(self.box[0,0,:])-1):
@@ -516,8 +515,7 @@ class SpaceCube:
                             self.VS_ratio_loop.append(1.0*V/S) 
                         if (self.windx!=0) or (self.windy!=0) or (self.windz!=0): 
                             self.length_inf.append(self.L) 
-                            self.size_inf.append(self.P)
-                            self.VS_ratio_inf.append(1.0*V/S)            
+                            self.size_inf.append(self.P)           
         for i in xrange(0,len(self.box[:,0,0])):
             for j in xrange(0,len(self.box[0,:,0])-1):
                 for k in xrange(0,len(self.box[0,0,:])-1): 
@@ -544,7 +542,6 @@ class SpaceCube:
                             self.size_loop.append(self.P) 
                         if (self.windx!=0) or (self.windy!=0) or (self.windz!=0): 
                             self.length_inf.append(self.L)   
-                            self.VS_ratio_inf.append(1.0*V/S)
                             self.size_inf.append(self.P)
                           
     def follow(self, xyz_strings,i,j,k,XYZ): 
@@ -769,36 +766,36 @@ L_Frac = 1.0*(np.sum(lattice.length_inf))/(np.sum(lattice.length_inf)+np.sum(lat
 
 #np.savetxt("frac_length_125.txt", np.c_[L_Frac], fmt ='%0.6f')
 
-size14 = np.loadtxt("frac_length_14.txt")
-size15 = np.loadtxt("frac_length_15.txt")
-size18 = np.loadtxt("frac_length_18.txt")
-size19 = np.loadtxt("frac_length_19.txt")
-size20 = np.loadtxt("frac_length_20.txt")
-size22 = np.loadtxt("frac_length_22.txt")
-size24 = np.loadtxt("frac_length_24.txt")
-size25 = np.loadtxt("frac_length_25.txt")
-size30 = np.loadtxt("frac_length_30.txt")
-size35 = np.loadtxt("frac_length_35.txt")
-size40 = np.loadtxt("frac_length_40.txt")
-size45 = np.loadtxt("frac_length_45.txt")
-size50 = np.loadtxt("frac_length_50.txt")
-size55 = np.loadtxt("frac_length_55.txt")
-size60 = np.loadtxt("frac_length_60.txt")
-size65 = np.loadtxt("frac_length_65.txt")
-size70 = np.loadtxt("frac_length_70.txt")
-size80 = np.loadtxt("frac_length_80.txt")
-size90 = np.loadtxt("frac_length_90.txt")
-size100 = np.loadtxt("frac_length_100.txt")
-size115 = np.loadtxt("frac_length_115.txt")
-size125 = np.loadtxt("frac_length_125.txt")
-
-plt.figure("Length Fraction: Cube Vs Toroid")
-x = [14,15,18,19,20,22,24,25,30,35,40,45,50,55,60,65,70,80,90,100,115,125]
-l_open = [size14, size15, size18, size19, size20, size22, size24, size25, size30, size35, size40, size45, size50, size55, size60, size65, size70, size80, size90, size100, size115, size125]
-l_noBC = [0.90403800000000001, 0.88257399999999997, 0.85202699999999998, 0.85005399999999998, 0.87751199999999996, 0.84775100000000003, 0.88666100000000003, 0.87615799999999999, 0.84362400000000004, 0.84077500000000005, 0.81602300000000005, 0.83438000000000001, 0.805087, 0.806504, 0.80219499999999999, 0.80300000000000005, 0.79770700000000005, 0.79191800000000001, 0.79272600000000004, 0.793713, 0.79342500000000005, 0.78392499999999998]
-plt.scatter(x, l_noBC, c = 'b')
-plt.scatter(x, l_open, c = 'r')
-plt.show("Length Fraction: Cube Vs Toroid")
+#size14 = np.loadtxt("frac_length_14.txt")
+#size15 = np.loadtxt("frac_length_15.txt")
+#size18 = np.loadtxt("frac_length_18.txt")
+#size19 = np.loadtxt("frac_length_19.txt")
+#size20 = np.loadtxt("frac_length_20.txt")
+#size22 = np.loadtxt("frac_length_22.txt")
+#size24 = np.loadtxt("frac_length_24.txt")
+#size25 = np.loadtxt("frac_length_25.txt")
+#size30 = np.loadtxt("frac_length_30.txt")
+#size35 = np.loadtxt("frac_length_35.txt")
+#size40 = np.loadtxt("frac_length_40.txt")
+#size45 = np.loadtxt("frac_length_45.txt")
+#size50 = np.loadtxt("frac_length_50.txt")
+#size55 = np.loadtxt("frac_length_55.txt")
+#size60 = np.loadtxt("frac_length_60.txt")
+#size65 = np.loadtxt("frac_length_65.txt")
+#size70 = np.loadtxt("frac_length_70.txt")
+#size80 = np.loadtxt("frac_length_80.txt")
+#size90 = np.loadtxt("frac_length_90.txt")
+#size100 = np.loadtxt("frac_length_100.txt")
+#size115 = np.loadtxt("frac_length_115.txt")
+#size125 = np.loadtxt("frac_length_125.txt")
+#
+#plt.figure("Length Fraction: Cube Vs Toroid")
+#x = [14,15,18,19,20,22,24,25,30,35,40,45,50,55,60,65,70,80,90,100,115,125]
+#l_open = [size14, size15, size18, size19, size20, size22, size24, size25, size30, size35, size40, size45, size50, size55, size60, size65, size70, size80, size90, size100, size115, size125]
+#l_noBC = [0.90403800000000001, 0.88257399999999997, 0.85202699999999998, 0.85005399999999998, 0.87751199999999996, 0.84775100000000003, 0.88666100000000003, 0.87615799999999999, 0.84362400000000004, 0.84077500000000005, 0.81602300000000005, 0.83438000000000001, 0.805087, 0.806504, 0.80219499999999999, 0.80300000000000005, 0.79770700000000005, 0.79191800000000001, 0.79272600000000004, 0.793713, 0.79342500000000005, 0.78392499999999998]
+#plt.scatter(x, l_noBC, c = 'b')
+#plt.scatter(x, l_open, c = 'r')
+#plt.show("Length Fraction: Cube Vs Toroid")
 
 #plt.figure("Extended! Length Fraction: Cube Vs Toroid")
 #l_noBC_Extend = np.loadtxt("noBC_fopen.txt")
@@ -816,17 +813,14 @@ y = []
 x_Fit = []
 y_Fit = []
 for i in xrange(0, len(lattice.VS_ratio_loop)):    
-    if lattice.VS_ratio_loop[i] != 0:
+    if (lattice.VS_ratio_loop[i] != 0) and (lattice.size_loop[i] < 40):
         x.append(np.log10(lattice.size_loop[i]))
-        y.append(np.log10(lattice.VS_ratio_loop[i]))
-    #if lattice.VS_ratio_loop[i] != 0 and (lattice.size_loop[i] > 20):   #Comment out if want to include only max value of VS_ratio
-    #    x_Fit.append(np.log10(lattice.size_loop[i]))
-    #    y_Fit.append(np.log10(lattice.VS_ratio_loop[i]))  
+        y.append(np.log10(lattice.VS_ratio_loop[i])) 
         
 V =np.zeros((len(lattice.size_loop), 2)) 
 V[:,0] += lattice.size_loop
 V[:,1] += lattice.VS_ratio_loop        
-for i in xrange(5, max(lattice.size_loop)+1):  #Including only max values of VS_ratio, comment out for previous x_Fit, y_Fit
+for i in xrange(5, 40):  #max(lattice.size_loop)+1
     select = (V[:,0] == i)
     if len(V[select,0])!=0:
         if (V[select,0][0] > 10) and len(V[select,1])!=0:
@@ -836,44 +830,93 @@ for i in xrange(len(y_Fit)):
     check = np.isinf(y_Fit[i])
     if check==True:
         y_Fit[i] = 0
-        
-#x = []
-#y = []
-#x_Fit = []
-#y_Fit = []
-#for i in xrange(0, len(lattice.VS_ratio_inf)):    
-#    if lattice.VS_ratio_inf[i] != 0:
-#        x.append(np.log10(lattice.size_inf[i]))
-#        y.append(np.log10(lattice.VS_ratio_inf[i]))
-#    #if lattice.VS_ratio_loop[i] != 0 and (lattice.size_loop[i] > 20):   #Comment out if want to include only max value of VS_ratio
-#    #    x_Fit.append(np.log10(lattice.size_loop[i]))
-#    #    y_Fit.append(np.log10(lattice.VS_ratio_loop[i]))  
-#        
-#V =np.zeros((len(lattice.size_inf), 2)) 
-#V[:,0] += lattice.size_inf
-#V[:,1] += lattice.VS_ratio_inf        
-#for i in xrange(5, max(lattice.size_inf)+1):  #Including only max values of VS_ratio, comment out for previous x_Fit, y_Fit
-#    select = (V[:,0] == i)
-#    if len(V[select,0])!=0:
-#        if (V[select,0][0] > 10) and len(V[select,1])!=0:
-#            y_Fit.append(np.log10(max(V[select, 1])))
-#            x_Fit.append(np.log10(V[select,0][0]))
-#for i in xrange(len(y_Fit)):
-#    check = np.isinf(y_Fit[i])
-#    if check==True:
-#        y_Fit[i] = 0
-        
-#plt.figure("Fig.V/S")
-#plt.scatter(x, y)
-#poptVS,pcovVS = curve_fit(lin_func, x_Fit, y_Fit)
-#x_lin = np.linspace(min(x_Fit),max(x_Fit),1000)
-#plt.plot( x_lin, lin_func(x_lin,*poptVS) , c = 'blue')
-#plt.xlabel(r'$Log(Loop \ Perimeter)$', size = '18')
-#plt.ylabel(r'$Log(Volume \ to \ Surface \ ratio)$', size = '18')
-#plt.show("Fig.V/S")
-#errorVS = np.sqrt(np.diag(pcovVS))
-#poptVS[0] = 10**(poptVS[0])
-#errorVS[0] = errorVS[0]*(np.log(10))*poptVS[0]
-#errorVS[1] = errorVS[1]
-#print "[Fig.V/S] K = %.3f" %(poptVS[0]), "+/- %.3f" %(errorVS[0] )
-#print "[Fig.V/S] v = %.3f" %(poptVS[1]), "+/- %.3f" %(errorVS[1])
+              
+plt.figure("Fig.V/S")
+plt.scatter(x, y, label = "Periodic boundary conditions")
+poptVS,pcovVS = curve_fit(lin_func, x_Fit, y_Fit)
+x_lin = np.linspace(min(x_Fit),max(x_Fit),1000)
+plt.plot( x_lin, lin_func(x_lin,*poptVS) , c = 'blue')
+plt.xlabel(r'$Log(Loop \ Perimeter)$', size = '18')
+plt.ylabel(r'$Log(Volume \ to \ Surface \ ratio)$', size = '18')
+plt.legend(loc = 2,prop={'size': 16})
+plt.show("Fig.V/S")
+errorVS = np.sqrt(np.diag(pcovVS))
+poptVS[0] = 10**(poptVS[0])
+errorVS[0] = errorVS[0]*(np.log(10))*poptVS[0]
+errorVS[1] = errorVS[1]
+print "[Fig.V/S] K = %.3f" %(poptVS[0]), "+/- %.3f" %(errorVS[0] )
+print "[Fig.V/S] v = %.3f" %(poptVS[1]), "+/- %.3f" %(errorVS[1])
+
+Error_Range = []
+Avg_L = []
+P_Range = []
+count_L=[]
+P_Fit=[]
+L_Fit=[]
+A = np.zeros((len(lattice.size_loop), 2))
+A[:,0] += lattice.length_loop
+A[:,1] += lattice.size_loop
+#i = 0
+for i in xrange(5, max(lattice.size_loop)):
+    select = (A[:,1] == i)
+    if (len(A[select,0])!=0) and (A[select,1][0]>5):
+    #if (len(A[select,0])!=0):
+        Avg_L.append(sum(A[select,0])/len(A[select,0]))
+        P_Range.append(A[select,1][0])
+        count_L.append(len(A[select,0]))
+        if(len(A[select,0])>4):
+            P_Fit.append(A[select,1][0])
+            L_Fit.append(sum(A[select,0])/len(A[select,0]))
+
+x = np.log10(P_Range)            
+y = np.log10(Avg_L)
+x_Fit = np.log10(P_Fit)
+y_Fit = np.log10(L_Fit)
+
+sig_L=np.zeros(len(y_Fit))   #change y_Fit to Avg_L for the error on all data points
+for c in xrange(0,len(y_Fit)):
+    for i in xrange(0,len(count_L)):
+        if count_L[c] >3:
+            sig_L[c] += ((np.log10(lattice.length_loop[i])-np.log10(L_Fit[c]))**2)
+    if count_L[c] >3:
+        sig_L[c] = np.sqrt((1./(count_L[c]-1))*sig_L[c])/np.sqrt(count_L[c])
+n = []
+L_Range = []
+P_Range = []  #redefine  P_Range if cutting at R_c for in the plot above
+count_P = []
+P_Fit = []
+L_Fit = []
+n_Fit = []
+for i in xrange(5, max(lattice.size_loop)):
+    select = (A[:,1] == i)
+    if (len(A[select,0])!=0) and (A[select,1][0]>5):
+        n.append(1.0*len(A[select,1])/(N**3))
+        L_Range.append(A[select,0][0])
+        P_Range.append(A[select,1][0])
+        count_P.append(len(A[select,1]))
+        if(len(A[select,0])>4):
+            P_Fit.append(A[select,1][0])
+            L_Fit.append(A[select,0][0])
+            n_Fit.append(1.0*len(A[select,1])/(N**3))
+x = np.log10(L_Range)
+y = np.log10(n)
+x_Fit = np.log10(L_Fit)
+y_Fit = np.log10(n_Fit)
+
+sig_n2 = (sig_L*(5/2))/(x_Fit**(3/2))   
+
+plt.figure("Fig.6")
+plt.scatter(x, y)
+plt.errorbar(x_Fit, y_Fit ,xerr = 0, yerr = sig_n2, fmt ='o', c = 'blue')
+popt4,pcov4 = curve_fit(lin_func, x_Fit, y_Fit, sigma = sig_n2)
+x_lin_Fit = np.linspace(min(x_Fit),max(x_Fit),500)
+plt.plot( x_lin_Fit, lin_func(x_lin_Fit,*popt4) , c = 'blue')
+error4 = np.sqrt(np.diag(pcov4))
+popt4[0] = 10**(popt4[0])
+error4[0] = error4[0]*(np.log(10))*popt4[0]
+error4[1] = error4[1]
+plt.xlabel(r'$Log(Loop \ Length)$', size = '18')
+plt.ylabel(r'$Log(Density)$', size = '18')
+plt.show("Fig.6")
+print "[Fig.6] C = %.3f" %(popt4[0]), "+/- %.3f" %(error4[0] )
+print "[Fig.6] g = %.3f" %(-popt4[1]), "+/- %.3f" %(error4[1])
