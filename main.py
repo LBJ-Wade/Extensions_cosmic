@@ -482,7 +482,7 @@ class SpaceCube:
                         V = (self.x_max - self.x_min)*(self.y_max - self.y_min)*(self.z_max - self.z_min)
                         S =2.0 * ((self.x_max - self.x_min)*(self.y_max - self.y_min) + (self.y_max - self.y_min)*(self.z_max - self.z_min) + (self.z_max - self.z_min)*(self.x_max - self.x_min)) 
                         self.length_tot.append(self.L) 
-                        if (self.windx==0) or (self.windy==0) or (self.windz==0):
+                        if (self.windx==0) and (self.windy==0) and (self.windz==0):
                             self.length_loop.append(self.L)
                             self.size_loop.append(self.P)
                             self.VS_ratio_loop.append(1.0*V/S)
@@ -509,7 +509,7 @@ class SpaceCube:
                         V = (self.x_max - self.x_min)*(self.y_max - self.y_min)*(self.z_max - self.z_min)
                         S =2.0 * ((self.x_max - self.x_min)*(self.y_max - self.y_min) + (self.y_max - self.y_min)*(self.z_max - self.z_min) + (self.z_max - self.z_min)*(self.x_max - self.x_min))
                         self.length_tot.append(self.L) 
-                        if (self.windx==0) or (self.windy==0) or (self.windz==0):
+                        if (self.windx==0) and (self.windy==0) and (self.windz==0):
                             self.length_loop.append(self.L) 
                             self.size_loop.append(self.P)
                             self.VS_ratio_loop.append(1.0*V/S) 
@@ -536,7 +536,7 @@ class SpaceCube:
                         V = (self.x_max - self.x_min)*(self.y_max - self.y_min)*(self.z_max - self.z_min)
                         S =2.0 * ((self.x_max - self.x_min)*(self.y_max - self.y_min) + (self.y_max - self.y_min)*(self.z_max - self.z_min) + (self.z_max - self.z_min)*(self.x_max - self.x_min))
                         self.length_tot.append(self.L) 
-                        if (self.windx==0) or (self.windy==0) or (self.windz==0):
+                        if (self.windx==0) and (self.windy==0) and (self.windz==0):
                             self.length_loop.append(self.L) 
                             self.VS_ratio_loop.append(1.0*V/S)
                             self.size_loop.append(self.P) 
